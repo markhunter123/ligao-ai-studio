@@ -1,0 +1,11 @@
+{
+  "name": "ligao-plugin-hello",
+  "version": "1.0.0",
+  "type": "tool",
+  "displayName": "Hello World Plugin",
+  "description": "A sample plugin that demonstrates the Ligao Plugin SDK by registering a simple greeting tool.",
+  "entrypoint": "ligao.plugin.sample.HelloPlugin",
+  "minPlatformVersion": "1.1.0",
+  "author": "Zhouyin.Wei",
+  "config": {}
+}

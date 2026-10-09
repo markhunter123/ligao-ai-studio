@@ -1,0 +1,83 @@
+package ligao.wiki.model;
+
+import com.baomidou.mybatisplus.annotation.*;
+import lombok.Data;
+
+import java.time.LocalDateTime;
+
+/**
+ * Wiki 知识库实体
+ *
+ * @author Zhouyin.Wei
+ */
+@Data
+@TableName("ligao_wiki_knowledge_base")
+public class WikiKnowledgeBaseEntity {
+
+    @TableId(type = IdType.ASSIGN_ID)
+    private Long id;
+
+    /** 知识库名称 */
+    private String name;
+
+    /** 描述 */
+    private String description;
+
+    /** 关联的 Agent ID（可选） */
+    private Long agentId;
+
+    /** Wiki 处理规则配置（WIKI.md 等效物） */
+    @TableField(updateStrategy = FieldStrategy.ALWAYS)
+    private String configContent;
+
+    /** 关联的本地目录路径（可选，用于批量扫描导入） */
+    private String sourceDirectory;
+
+    /**
+     * 是否对该知识库启用自动同步（周期扫描 sourceDirectory）。1=开，0=关。
+     * 自动扫描需"全局总闸 ligao.wiki.watcher-enabled 开 且 本字段为 1"（AND 语义）；
+     * 手动扫描不受此字段影响。
+     */
+    private Integer watcherEnabled;
+
+    /** 状态：active / processing / error */
+    private String status;
+
+    /** Wiki 页面数量 */
+    private Integer pageCount;
+
+    /** 原始材料数量 */
+    private Integer rawCount;
+
+    /** 所属工作区 ID（默认 1 = default） */
+    private Long workspaceId;
+
+    /**
+     * 创建者用户 ID（个人知识库的拥有者）。NULL = 非个人创建，视为公共知识库。
+     * 私密知识库（visibility='PRIVATE'）仅对 creatorId 本人可见。
+     */
+    private Long creatorId;
+
+    /**
+     * 归属范围：PUBLIC（公共/工作区共享） / PRIVATE（个人，仅创建者可见）。
+     * 默认 PUBLIC，以保持旧有行的工作区共享行为。
+     */
+    private String visibility;
+
+    /**
+     * 绑定的 Embedding 模型 ID（ligao_model_config.id，model_type='embedding'）。
+     * <p>
+     * NULL = 使用系统默认（ligao_system_setting 的 embedding.default.model.id），
+     * 再无则取任意 enabled 的 embedding 模型，最终全无则语义搜索降级为不可用。
+     */
+    @TableField(updateStrategy = FieldStrategy.ALWAYS)
+    private Long embeddingModelId;
+
+    @TableField(fill = FieldFill.INSERT)
+    private LocalDateTime createTime;
+
+    @TableField(fill = FieldFill.INSERT_UPDATE)
+    private LocalDateTime updateTime;
+
+    private Integer deleted;
+}
