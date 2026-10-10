@@ -5,19 +5,19 @@
     :style="{ width: `${size}px`, height: `${size}px`, fontSize: `${Math.round(size * 0.7)}px` }"
     :title="title"
   >
-    <!-- Pixelart: inlined SVG inherits color via fill="currentColor". -->
+    <!-- Lucide: inlined SVG inherits color via stroke="currentColor". -->
     <span
-      v-if="parsed.kind === 'pixelart' && parsed.svg"
+      v-if="parsed.kind === 'lucide' && parsed.svg"
       class="skill-icon__svg"
       v-html="parsed.svg"
     />
-    <!-- Pixelart name we don't recognize (icon was renamed across
-         pixelarticons versions, or string is malformed). Show a
-         neutral placeholder so the layout doesn't shift. -->
+    <!-- Lucide name we don't recognize (icon not in the bundled set, or
+         string is malformed). Show a neutral placeholder so the layout
+         doesn't shift. -->
     <span
-      v-else-if="parsed.kind === 'pixelart'"
+      v-else-if="parsed.kind === 'lucide'"
       class="skill-icon__missing"
-      :title="`pi:${parsed.name}（未找到）`"
+      :title="`lu:${parsed.name}（未找到）`"
     >?</span>
     <img
       v-else-if="parsed.kind === 'url'"
@@ -40,10 +40,10 @@
 
 <script setup lang="ts">
 import { computed } from 'vue'
-import { parseIconValue } from '@/composables/usePixelarticons'
+import { parseIconValue } from '@/composables/useLucideIcons'
 
 const props = withDefaults(defineProps<{
-  /** Persisted icon string (emoji glyph / `pi:name` / http(s) URL). */
+  /** Persisted icon string (emoji glyph / `lu:name` / http(s) URL). */
   value: string | null | undefined
   /** Icon side length in pixels. Drives both font-size and box. */
   size?: number
@@ -77,14 +77,14 @@ const sizeClass = computed(() => {
   line-height: 1;
   flex-shrink: 0;
   /* Inherit color so parents (e.g. an agent card avatar) can tint the
-   * pixelart SVG via `currentColor`. Without parental color, the icon
+   * lucide SVG via `currentColor`. Without parental color, the icon
    * still picks up text-primary through normal CSS inheritance. */
   color: inherit;
 }
 
-/* Pixelart SVGs ship with viewBox=0 0 24 24 + fill=currentColor — they
- * scale crisply at any integer multiple. We force display:block on the
- * inner svg so the wrapper's flex centering works. */
+/* Lucide SVGs ship with viewBox=0 0 24 24 + stroke=currentColor — they
+ * scale cleanly at any size and inherit the wrapper's color. We force
+ * display:block on the inner svg so the wrapper's flex centering works. */
 .skill-icon__svg {
   display: inline-flex;
   align-items: center;
@@ -96,10 +96,6 @@ const sizeClass = computed(() => {
   width: 100%;
   height: 100%;
   display: block;
-  /* image-rendering: pixelated keeps the chunky pixel-art aesthetic
-   * even when the box is rendered at non-integer device pixels. */
-  image-rendering: pixelated;
-  shape-rendering: crispEdges;
 }
 
 .skill-icon__img {

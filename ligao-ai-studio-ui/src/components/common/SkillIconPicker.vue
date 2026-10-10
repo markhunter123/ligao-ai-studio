@@ -38,8 +38,8 @@
             >{{ tab.label }}</button>
           </div>
 
-          <!-- Pixelart browser -->
-          <div v-if="activeTab === 'pixelart'" class="mc-picker-body mc-picker-body--pixelart">
+          <!-- Lucide browser -->
+          <div v-if="activeTab === 'lucide'" class="mc-picker-body mc-picker-body--lucide">
             <div class="mc-picker-search">
               <svg class="mc-picker-search__icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
                 <circle cx="11" cy="11" r="7" />
@@ -68,10 +68,24 @@
               </button>
             </div>
 
+            <!-- 业务语义分类 chips（烘焙食品 / 研发工艺 / 品控安全 / …） -->
+            <div class="mc-picker-cats" role="tablist">
+              <button
+                v-for="cat in categoryKeys"
+                :key="cat"
+                type="button"
+                class="mc-picker-cat"
+                :class="{ 'mc-picker-cat--active': activeCategory === cat }"
+                role="tab"
+                :aria-selected="activeCategory === cat"
+                @click="activeCategory = cat"
+              >{{ t(`common.iconPicker.cat${cat[0].toUpperCase()}${cat.slice(1)}`) }}</button>
+            </div>
+
             <div v-if="filteredNames.length === 0" class="mc-picker-empty">
               {{ t('common.iconPicker.empty') }}
             </div>
-            <!-- Grid: ~50px tiles, fills width. With ~400 icons the
+            <!-- Grid: ~44px tiles, fills width. With ~120 icons the
                  native scroll is fine; virtualization isn't worth a dep. -->
             <div v-else class="mc-picker-grid" role="listbox">
               <button
@@ -79,18 +93,18 @@
                 :key="name"
                 type="button"
                 class="mc-picker-tile"
-                :class="{ 'mc-picker-tile--active': draft === `pi:${name}` }"
+                :class="{ 'mc-picker-tile--active': draft === `lu:${name}` }"
                 :title="name"
                 role="option"
-                :aria-selected="draft === `pi:${name}`"
-                @click="pickPixelart(name)"
+                :aria-selected="draft === `lu:${name}`"
+                @click="pickLucide(name)"
               >
-                <SkillIcon :value="`pi:${name}`" :size="22" />
+                <SkillIcon :value="`lu:${name}`" :size="22" />
               </button>
             </div>
 
             <p class="mc-picker-foot">
-              {{ t('common.iconPicker.pixelartCount', { n: pixelartCount }) }}
+              {{ t('common.iconPicker.lucideCount', { n: lucideCount }) }}
             </p>
           </div>
 
@@ -144,7 +158,13 @@
 import { computed, nextTick, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import SkillIcon from './SkillIcon.vue'
-import { pixelartIconNames, parseIconValue } from '@/composables/usePixelarticons'
+import {
+  lucideIconNames,
+  iconCategory,
+  ICON_CATEGORY_KEYS,
+  parseIconValue,
+  type IconCategory,
+} from '@/composables/useLucideIcons'
 
 const props = withDefaults(defineProps<{
   /** Two-way bound visibility flag — `v-model:visible` on the parent. */
@@ -165,34 +185,39 @@ const emit = defineEmits<{
 const { t } = useI18n()
 
 const tabs = computed(() => [
-  { id: 'pixelart' as const, label: t('common.iconPicker.tabPixelart') },
-  { id: 'emoji' as const,    label: t('common.iconPicker.tabEmoji') },
-  { id: 'url' as const,      label: t('common.iconPicker.tabUrl') },
+  { id: 'lucide' as const, label: t('common.iconPicker.tabLucide') },
+  { id: 'emoji' as const,  label: t('common.iconPicker.tabEmoji') },
+  { id: 'url' as const,    label: t('common.iconPicker.tabUrl') },
 ])
 
-const activeTab = ref<'pixelart' | 'emoji' | 'url'>('pixelart')
+const activeTab = ref<'lucide' | 'emoji' | 'url'>('lucide')
 const search = ref('')
 const searchInputRef = ref<HTMLInputElement | null>(null)
+
+/** 业务语义分类筛选（'all' = 全部）。 */
+const activeCategory = ref<'all' | IconCategory>('all')
+const categoryKeys = ICON_CATEGORY_KEYS
 
 /** Working buffer — what the user has staged but not committed. */
 const draft = ref<string>(props.modelValue || '')
 const emojiDraft = ref('')
 const urlDraft = ref('')
 
-const pixelartCount = computed(() => pixelartIconNames.length)
+const lucideCount = computed(() => lucideIconNames.length)
 
 /**
  * Reset all staging state when the picker re-opens, and pick the right
  * tab based on what the current value looks like — so opening for an
- * existing emoji lands on the Emoji tab, not Pixelart.
+ * existing emoji lands on the Emoji tab, not the icon browser.
  */
 watch(() => props.visible, async (open) => {
   if (!open) return
   draft.value = props.modelValue || ''
   search.value = ''
+  activeCategory.value = 'all'
   const parsed = parseIconValue(props.modelValue)
-  if (parsed.kind === 'pixelart') {
-    activeTab.value = 'pixelart'
+  if (parsed.kind === 'lucide') {
+    activeTab.value = 'lucide'
     emojiDraft.value = ''
     urlDraft.value = ''
   } else if (parsed.kind === 'url') {
@@ -204,31 +229,34 @@ watch(() => props.visible, async (open) => {
     emojiDraft.value = parsed.value
     urlDraft.value = ''
   } else {
-    activeTab.value = 'pixelart'
+    activeTab.value = 'lucide'
     emojiDraft.value = ''
     urlDraft.value = ''
   }
   await nextTick()
-  if (activeTab.value === 'pixelart') searchInputRef.value?.focus()
+  if (activeTab.value === 'lucide') searchInputRef.value?.focus()
 })
 
 const filteredNames = computed(() => {
+  const inCategory = activeCategory.value === 'all'
+    ? lucideIconNames
+    : lucideIconNames.filter(n => iconCategory(n) === activeCategory.value)
   const q = search.value.trim().toLowerCase()
-  if (!q) return pixelartIconNames
-  return pixelartIconNames.filter(n => n.includes(q))
+  if (!q) return inCategory
+  return inCategory.filter(n => n.includes(q))
 })
 
 /** Human-readable label for the current draft, surfaced in the header. */
 const draftSummary = computed(() => {
   const parsed = parseIconValue(draft.value)
-  if (parsed.kind === 'pixelart') return `pi:${parsed.name}`
+  if (parsed.kind === 'lucide') return `lu:${parsed.name}`
   if (parsed.kind === 'url') return parsed.url
   if (parsed.kind === 'emoji') return parsed.value
   return ''
 })
 
-function pickPixelart(name: string) {
-  draft.value = `pi:${name}`
+function pickLucide(name: string) {
+  draft.value = `lu:${name}`
 }
 function onEmojiInput() {
   draft.value = emojiDraft.value
@@ -468,6 +496,47 @@ function onApply() {
 }
 :global(html.dark .mc-picker-search__clear:hover) {
   background: rgba(255, 255, 255, 0.10);
+}
+
+/* 业务语义分类 chips */
+.mc-picker-cats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 12px;
+  flex-shrink: 0;
+}
+.mc-picker-cat {
+  appearance: none;
+  border: 1px solid rgba(74, 96, 118, 0.14);
+  background: transparent;
+  padding: 4px 12px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--mc-text-secondary);
+  cursor: pointer;
+  transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+}
+.mc-picker-cat:hover {
+  background: rgba(74, 96, 118, 0.08);
+  color: var(--mc-text-primary);
+}
+:global(html.dark .mc-picker-cat) {
+  border-color: rgba(255, 255, 255, 0.12);
+}
+:global(html.dark .mc-picker-cat:hover) {
+  background: rgba(255, 255, 255, 0.08);
+}
+.mc-picker-cat--active {
+  background: var(--mc-primary);
+  border-color: var(--mc-primary);
+  color: #fff;
+}
+.mc-picker-cat--active:hover {
+  background: var(--mc-primary-hover);
+  border-color: var(--mc-primary-hover);
+  color: #fff;
 }
 
 .mc-picker-grid {
