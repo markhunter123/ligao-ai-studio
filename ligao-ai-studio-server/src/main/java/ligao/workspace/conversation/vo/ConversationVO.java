@@ -40,7 +40,7 @@ public class ConversationVO extends ConversationEntity {
     private String streamStatus;
 
     /**
-     * 消息来源渠道：web / feishu / dingtalk / telegram / discord / wecom / qq / weixin / cron
+     * 消息来源渠道：web / feishu / dingtalk / wecom / qq / weixin / cron
      * 从 conversationId 前缀自动提取
      */
     private String source;
@@ -102,7 +102,7 @@ public class ConversationVO extends ConversationEntity {
         if (colonIdx <= 0) return "web";
         String prefix = conversationId.substring(0, colonIdx);
         return switch (prefix) {
-            case "feishu", "dingtalk", "telegram", "discord", "wecom", "qq", "weixin" -> prefix;
+            case "feishu", "dingtalk", "wecom", "qq", "weixin" -> prefix;
             case "cron" -> "cron";
             default -> "web";
         };

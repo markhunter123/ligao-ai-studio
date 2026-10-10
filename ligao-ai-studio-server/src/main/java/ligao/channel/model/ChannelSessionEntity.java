@@ -33,8 +33,6 @@ public class ChannelSessionEntity {
      * 不同渠道含义不同：
      * - 钉钉：sessionWebhook URL 或 userId
      * - 飞书：chat_id（oc_xxx）或 open_id（ou_xxx）
-     * - Telegram：chat_id
-     * - Discord：channel_id
      * - 企业微信：userId
      */
     private String targetId;

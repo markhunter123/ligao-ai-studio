@@ -259,22 +259,11 @@ Expand the chat interface's **thinking panel**. You see every tool call, argumen
 3. Wrong verification token
 4. Bot not added to group or missing permissions
 
-**Easier:** use **stream / long-connection / WebSocket mode** instead of webhook. DingTalk Stream, Feishu WebSocket, Telegram Long-Polling, Discord Gateway, Slack Socket mode — none need a public IP.
+**Easier:** use **stream / long-connection / WebSocket mode** instead of webhook. DingTalk Stream, Feishu WebSocket — none need a public IP.
 
 ### Can I use multiple channels at once?
 
-Yes. Each channel is independent and binds to one agent. Run a web console, DingTalk bot, and Telegram bot simultaneously, all with different agents (or the same one — your call).
-
-### Telegram / Discord can't reach the API (China network)
-
-Configure `http_proxy` in the channel config:
-
-```json
-{
-  "bot_token": "...",
-  "http_proxy": "http://127.0.0.1:7890"
-}
-```
+Yes. Each channel is independent and binds to one agent. Run a web console, DingTalk bot, and Feishu bot simultaneously, all with different agents (or the same one — your call).
 
 ---
 

@@ -10,11 +10,9 @@ import ligao.channel.ChannelAdapter;
 import ligao.channel.ChannelManager;
 import ligao.channel.dingtalk.DingTalkAppRegistrationService;
 import ligao.channel.dingtalk.DingTalkChannelAdapter;
-import ligao.channel.discord.DiscordChannelAdapter;
 import ligao.channel.feishu.FeishuAppRegistrationService;
 import ligao.channel.feishu.FeishuChannelAdapter;
 import ligao.channel.qrcode.util.QrCodeImageEncoder;
-import ligao.channel.telegram.TelegramChannelAdapter;
 import ligao.channel.weixin.ILinkClient;
 import ligao.channel.weixin.WeixinChannelAdapter;
 
@@ -28,7 +26,7 @@ import java.util.Optional;
  * 渠道 Webhook 回调接口
  * <p>
  * 接收来自各 IM 平台的消息推送回调。
- * 各平台（钉钉、飞书、Telegram 等）将此 URL 配置为消息回调地址。
+ * 各平台（钉钉、飞书等）将此 URL 配置为消息回调地址。
  * <p>
  * URL 格式：/api/v1/channels/webhook/{channelType}
  * 此接口不需要 JWT 认证（由各平台的签名/Token 机制保障安全）。
@@ -185,60 +183,12 @@ public class ChannelWebhookController {
         return ResponseEntity.ok(body);
     }
 
-    @Operation(summary = "Telegram 消息回调")
-    @PostMapping("/telegram")
-    public ResponseEntity<String> telegramWebhook(@RequestBody Map<String, Object> payload) {
-        log.debug("[webhook] Telegram callback received");
-        Optional<ChannelAdapter> adapter = channelManager.getAdapterByType("telegram");
-        if (adapter.isPresent() && adapter.get() instanceof TelegramChannelAdapter telegram) {
-            telegram.handleWebhook(payload);
-        } else {
-            log.warn("[webhook] Telegram channel not active, ignoring callback");
-        }
-        return ResponseEntity.ok("ok");
-    }
-
-    @Operation(summary = "Discord 消息回调（已废弃：Discord 已切换为 Gateway WebSocket 模式）")
-    @PostMapping("/discord")
-    public ResponseEntity<Map<String, Object>> discordWebhook(@RequestBody Map<String, Object> payload) {
-        // Discord Interaction PING 仍需响应（防止 Discord 删除 Interaction URL）
-        Integer type = (Integer) payload.get("type");
-        if (type != null && type == 1) {
-            return ResponseEntity.ok(Map.of("type", 1));
-        }
-
-        // Discord 已切换为 Gateway WebSocket，webhook 回调不再用于接收消息
-        log.warn("[webhook] Discord webhook called, but messages are now received via Gateway WebSocket");
-        Optional<ChannelAdapter> adapter = channelManager.getAdapterByType("discord");
-        if (adapter.isPresent() && adapter.get() instanceof DiscordChannelAdapter discord) {
-            discord.handleWebhook(payload);
-        }
-        return ResponseEntity.ok(Map.of("status", "ok"));
-    }
-
     @Operation(summary = "企业微信消息回调（智能机器人模式不使用，保留兼容）")
     @PostMapping("/wecom")
     public ResponseEntity<String> wecomWebhook(@RequestBody Map<String, Object> payload) {
         // 智能机器人模式通过 WebSocket 长连接接收消息，不再使用 HTTP 回调
         log.debug("[webhook] WeCom callback received (not used in bot mode, messages are received via WebSocket)");
         return ResponseEntity.ok("success");
-    }
-
-    @Operation(summary = "Slack Events API 回调")
-    @PostMapping("/slack")
-    public ResponseEntity<Map<String, Object>> slackWebhook(@RequestBody Map<String, Object> payload) {
-        log.debug("[webhook] Slack callback received");
-        // URL Verification challenge
-        if ("url_verification".equals(payload.get("type"))) {
-            return ResponseEntity.ok(Map.of("challenge", payload.getOrDefault("challenge", "")));
-        }
-        Optional<ChannelAdapter> adapter = channelManager.getAdapterByType("slack");
-        if (adapter.isPresent() && adapter.get() instanceof ligao.channel.slack.SlackChannelAdapter slack) {
-            Map<String, Object> result = slack.handleWebhook(payload);
-            return ResponseEntity.ok(result);
-        }
-        log.warn("[webhook] Slack channel not active, ignoring callback");
-        return ResponseEntity.ok(Map.of("status", "channel_not_active"));
     }
 
     // ==================== 微信 iLink Bot ====================

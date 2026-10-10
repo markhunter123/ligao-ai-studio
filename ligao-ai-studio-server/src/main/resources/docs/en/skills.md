@@ -425,7 +425,7 @@ LESSONS are viewable and editable in the skill detail drawer's **Memory tab**.
 
 ## Secrets: put the token in the right place
 
-Lots of skills need API credentials to function — tencent-meeting needs `TENCENT_MEETING_TOKEN`, Slack needs a bot token, Linear needs a personal API key. Those values **don't belong in SKILL.md** (it goes into the prompt and leaks to the LLM), don't belong in scripts (one git push and you're sorry), and editing `~/.zshrc` requires restarting the server and won't follow the skill across machines.
+Lots of skills need API credentials to function — tencent-meeting needs `TENCENT_MEETING_TOKEN`, Linear needs a personal API key. Those values **don't belong in SKILL.md** (it goes into the prompt and leaks to the LLM), don't belong in scripts (one git push and you're sorry), and editing `~/.zshrc` requires restarting the server and won't follow the skill across machines.
 
 As of v1.3, every skill has its own **per-skill secret store**.
 

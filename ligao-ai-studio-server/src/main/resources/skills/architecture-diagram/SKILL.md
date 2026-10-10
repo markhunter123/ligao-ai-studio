@@ -42,7 +42,7 @@ author: ported
 1. 用户描述其系统架构（组件、连接、技术栈）
 2. 按照下方的设计体系生成 HTML 文件
 3. 使用 `write_file` 保存为 `.html` 文件（例如 `~/architecture-diagram.html`）
-4. **如果用户希望在聊天中查看/分享图表（Web 控制台、企业微信、钉钉、飞书、Telegram 等）：调用 `render_html_image(filePath="<html 文件路径>", filename="<名称>")`** 并返回它生成的 markdown 链接。IM 渠道只能原生投递栅格化图片，因此需要 PNG 格式才能使图表以内联方式显示，而不是死链或文件附件。
+4. **如果用户希望在聊天中查看/分享图表（Web 控制台、企业微信、钉钉、飞书、微信、QQ 等）：调用 `render_html_image(filePath="<html 文件路径>", filename="<名称>")`** 并返回它生成的 markdown 链接。IM 渠道只能原生投递栅格化图片，因此需要 PNG 格式才能使图表以内联方式显示，而不是死链或文件附件。
 5. 否则，用户直接在浏览器中打开 `.html` 文件——离线运行，无依赖。
 
 ### 输出位置
@@ -60,7 +60,7 @@ author: ported
 render_html_image(filePath="./architecture-diagram.html", filename="architecture")
 ```
 
-这将返回一个带有 `image/png` MIME 类型的 `/api/v1/files/generated/<id>` URL。渠道层检测到图片 MIME 后会将 PNG 作为原生图片消息上传（从而在企业微信 / 钉钉 / 飞书 / Telegram / Web 中以内联方式渲染）。如果没有这一步，`.html` 制品到达 IM 渠道时要么是无效的 markdown 链接，要么顶多是一个无法预览的文件附件。
+这将返回一个带有 `image/png` MIME 类型的 `/api/v1/files/generated/<id>` URL。渠道层检测到图片 MIME 后会将 PNG 作为原生图片消息上传（从而在企业微信 / 钉钉 / 飞书 / 微信 / QQ / Web 中以内联方式渲染）。如果没有这一步，`.html` 制品到达 IM 渠道时要么是无效的 markdown 链接，要么顶多是一个无法预览的文件附件。
 
 ### 本地预览
 

@@ -42,8 +42,8 @@ import java.util.concurrent.atomic.AtomicReference;
  * by {@code java.net.http.HttpClient}; see {@link ProxySettings} for the
  * resulting coverage boundary.
  *
- * <p>Adapters that carry their own per-channel proxy (Telegram / Discord set an
- * explicit {@code .proxy()}) override the default selector, so this global proxy
+ * <p>Adapters that carry their own per-channel proxy override the default
+ * selector, so this global proxy
  * never fights a more specific one.
  */
 @Slf4j

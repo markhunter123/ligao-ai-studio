@@ -55,7 +55,7 @@ const { t } = useI18n()
 // dump. Order within each group is from "most common" to "edge" so first
 // glance lands on the right thing.
 const groups = [
-  { key: 'im', types: ['telegram', 'discord', 'slack', 'qq'] },
+  { key: 'im', types: ['qq'] },
   { key: 'enterprise', types: ['wecom', 'weixin', 'feishu', 'dingtalk'] },
   { key: 'web', types: ['web', 'webchat', 'webhook'] },
 ]

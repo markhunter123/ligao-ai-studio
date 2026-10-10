@@ -22,8 +22,8 @@ import java.util.Map;
  * NOT participate in the DB segment that ChatController accumulates from
  * the structured stream. Skipping FINAL_SUMMARY left
  * {@code AgentService.chat()} (the sync entry used by every IM channel)
- * with an empty reply, which silently dropped DingTalk / Slack /
- * Telegram replies on the direct-answer path. It also left
+ * with an empty reply, which silently dropped DingTalk replies
+ * on the direct-answer path. It also left
  * {@code ligao_message.content} empty on the web channel — the SSE
  * client saw the answer in real time but reopening the conversation
  * showed a blank assistant turn.

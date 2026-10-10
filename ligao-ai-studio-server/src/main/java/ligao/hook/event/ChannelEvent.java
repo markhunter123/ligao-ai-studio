@@ -8,7 +8,7 @@ import java.util.Map;
  *
  * @param type         事件子类型；必须以 {@code channel:} 开头
  * @param timestamp    发生时间
- * @param channelType  渠道类型（web / telegram / feishu / ...）
+ * @param channelType  渠道类型（web / feishu / ...）
  * @param channelId    渠道实例 ID
  * @param payload      消息内容摘要（sha256）、方向、状态码等
  */

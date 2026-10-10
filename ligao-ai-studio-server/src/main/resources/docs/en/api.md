@@ -621,13 +621,10 @@ Total routes extracted: 406.
 | `POST` | `/api/v1/channels/webhook/dingtalk` | `Dingtalk Webhook` |
 | `POST` | `/api/v1/channels/webhook/dingtalk/register/begin` | `Dingtalk Register Begin` |
 | `GET` | `/api/v1/channels/webhook/dingtalk/register/status` | `Dingtalk Register Status` |
-| `POST` | `/api/v1/channels/webhook/discord` | `Discord Webhook` |
 | `POST` | `/api/v1/channels/webhook/feishu` | `Feishu Webhook` |
 | `POST` | `/api/v1/channels/webhook/feishu/register/begin` | `Feishu Register Begin` |
 | `GET` | `/api/v1/channels/webhook/feishu/register/status` | `Feishu Register Status` |
-| `POST` | `/api/v1/channels/webhook/slack` | `Slack Webhook` |
 | `GET` | `/api/v1/channels/webhook/status` | `Status` |
-| `POST` | `/api/v1/channels/webhook/telegram` | `Telegram Webhook` |
 | `POST` | `/api/v1/channels/webhook/wecom` | `Wecom Webhook` |
 | `GET` | `/api/v1/channels/webhook/weixin/qrcode` | `Weixin Qrcode` |
 | `GET` | `/api/v1/channels/webhook/weixin/qrcode/status` | `Weixin Qrcode Status` |

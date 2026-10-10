@@ -15,8 +15,8 @@ If you're using Ligao, read [Introduction](./intro). If you're building on Ligao
 │  ┌──────────────┐  ┌──────────────┐  ┌─────────────────────┐   │
 │  │  Web Console  │  │  Desktop App  │  │   IM Channels       │   │
 │  │   Vue 3 SPA   │  │   Electron    │  │ DingTalk / Feishu / │   │
-│  │  (src/static) │  │  + Bundled    │  │ WeCom / Telegram /  │   │
-│  │               │  │   JRE 21      │  │ Discord / QQ / ...  │   │
+│  │  (src/static) │  │  + Bundled    │  │ WeCom / QQ /        │   │
+│  │               │  │   JRE 21      │  │ WeChat / ...        │   │
 │  └───────┬──────┘  └──────┬───────┘  └──────────┬──────────┘   │
 │          │  HTTP/SSE       │  HTTP/SSE            │ SPI           │
 │          └────────┬────────┴───────────────────────┘              │

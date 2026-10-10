@@ -4,11 +4,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import ligao.channel.ChannelMessageRouter;
-import ligao.channel.discord.DiscordChannelAdapter;
 import ligao.channel.feishu.FeishuChannelAdapter;
 import ligao.channel.model.ChannelEntity;
 import ligao.channel.qq.QQChannelAdapter;
-import ligao.channel.telegram.TelegramChannelAdapter;
 import ligao.channel.wecom.WeComChannelAdapter;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -85,67 +83,5 @@ class SingleLeaderHookTest {
                 mock(ligao.channel.wecom.cards.WeComCardDispatcher.class),
                 mock(ligao.channel.wecom.WeComKeepaliveScheduler.class));
         assertTrue(adapter.requiresSingleLeader());
-    }
-
-    @Test
-    @DisplayName("Discord always requires single leader (Gateway WS, 1 session per token)")
-    void discordAlwaysRequiresLeader() {
-        DiscordChannelAdapter adapter = new DiscordChannelAdapter(
-                channel("discord", "{\"bot_token\":\"x\"}"),
-                router, objectMapper);
-        assertTrue(adapter.requiresSingleLeader());
-    }
-
-    @Test
-    @DisplayName("Telegram in long-polling mode requires single leader (default mode)")
-    void telegramPollingRequiresLeader() {
-        TelegramChannelAdapter adapter = new TelegramChannelAdapter(
-                channel("telegram", "{\"bot_token\":\"x\"}"),
-                router, objectMapper);
-        assertTrue(adapter.requiresSingleLeader(),
-                "Default Telegram mode is long-polling and must require single leader");
-    }
-
-    @Test
-    @DisplayName("Telegram explicitly set to polling requires single leader")
-    void telegramExplicitPollingRequiresLeader() {
-        TelegramChannelAdapter adapter = new TelegramChannelAdapter(
-                channel("telegram",
-                        "{\"bot_token\":\"x\",\"connection_mode\":\"polling\"}"),
-                router, objectMapper);
-        assertTrue(adapter.requiresSingleLeader());
-    }
-
-    @Test
-    @DisplayName("Telegram in webhook mode (explicit + url) does NOT require single leader")
-    void telegramExplicitWebhookDoesNotRequireLeader() {
-        TelegramChannelAdapter adapter = new TelegramChannelAdapter(
-                channel("telegram",
-                        "{\"bot_token\":\"x\",\"connection_mode\":\"webhook\",\"webhook_url\":\"https://example.com/hook\"}"),
-                router, objectMapper);
-        assertFalse(adapter.requiresSingleLeader(),
-                "Webhook callbacks are HTTP-fanned by the LB, so all nodes may subscribe");
-    }
-
-    @Test
-    @DisplayName("Telegram legacy config (no connection_mode + webhook_url set) infers webhook → no leader")
-    void telegramLegacyWebhookInferredDoesNotRequireLeader() {
-        TelegramChannelAdapter adapter = new TelegramChannelAdapter(
-                channel("telegram",
-                        "{\"bot_token\":\"x\",\"webhook_url\":\"https://example.com/hook\"}"),
-                router, objectMapper);
-        assertFalse(adapter.requiresSingleLeader(),
-                "Legacy config without connection_mode but with webhook_url must be inferred as webhook");
-    }
-
-    @Test
-    @DisplayName("Telegram connection_mode=webhook but webhook_url blank falls back to polling → leader required")
-    void telegramWebhookWithoutUrlIsPolling() {
-        TelegramChannelAdapter adapter = new TelegramChannelAdapter(
-                channel("telegram",
-                        "{\"bot_token\":\"x\",\"connection_mode\":\"webhook\"}"),
-                router, objectMapper);
-        assertTrue(adapter.requiresSingleLeader(),
-                "Webhook mode without a URL falls through to polling and must require single leader");
     }
 }

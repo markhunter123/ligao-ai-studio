@@ -44,7 +44,7 @@ public class MessageContentPart {
     private String path;
 
     /**
-     * 平台媒体标识（飞书 image_key / file_key，钉钉 downloadCode，Telegram file_id 等）。
+     * 平台媒体标识（飞书 image_key / file_key，钉钉 downloadCode 等）。
      * 发送侧据此调用平台富媒体 API。
      */
     private String mediaId;

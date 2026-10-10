@@ -112,17 +112,6 @@ export const mcpCatalog: McpCatalogEntry[] = [
     },
   },
   {
-    key: 'slack',
-    name: 'Slack',
-    description: 'Send messages, create canvases and fetch Slack data',
-    docsUrl: 'https://docs.slack.dev/ai/mcp-server',
-    iconKey: 'slack',
-    config: {
-      transport: 'streamable_http',
-      url: 'https://mcp.slack.com/mcp',
-    },
-  },
-  {
     key: 'supabase',
     name: 'Supabase',
     description: 'Manage databases, authentication and storage',

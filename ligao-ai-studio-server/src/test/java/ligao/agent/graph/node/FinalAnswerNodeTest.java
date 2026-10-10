@@ -299,8 +299,8 @@ class FinalAnswerNodeTest {
     // surfaces verbatim to every channel — IM clients render a clickable
     // link that 404s, and users save the 404 HTML body as a .docx which
     // they then report as "corrupted file". Putting the guard at the
-    // FinalAnswerNode terminal means EVERY channel (Web SSE, Slack,
-    // DingTalk, WeCom, Telegram, …) sees the same scrubbed text.
+    // FinalAnswerNode terminal means EVERY channel (Web SSE,
+    // DingTalk, WeCom, …) sees the same scrubbed text.
 
     @Test
     @DisplayName("fake-URL guard: hallucinated generated-file URL → user-visible warning")
@@ -332,7 +332,7 @@ class FinalAnswerNodeTest {
 
         Map<String, Object> result = guarded.apply(state);
 
-        // Cached URLs survive verbatim — downstream WeCom / Slack / etc.
+        // Cached URLs survive verbatim — downstream WeCom / etc.
         // adapters can still rewrite them into native attachments.
         assertTrue(((String) result.get(FINAL_ANSWER))
                 .contains("/api/v1/files/generated/" + id),

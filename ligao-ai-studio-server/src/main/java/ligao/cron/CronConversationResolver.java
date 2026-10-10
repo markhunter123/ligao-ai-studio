@@ -76,7 +76,7 @@ public class CronConversationResolver {
      *       were written before the {@code userId} field was added (V62
      *       baseline / older). Matches when the channel adapter happens to
      *       use the same value for {@code session.targetId} and
-     *       {@code dc.targetId} (Slack / Discord / Telegram). Will miss for
+     *       {@code dc.targetId}. Will miss for
      *       DingTalk-style replyToken adapters but those rows will never
      *       have written a useful targetId match either, so behavior is
      *       no worse than before.</li>

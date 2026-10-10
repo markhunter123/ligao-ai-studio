@@ -209,7 +209,6 @@ Ligao 在 link 分支检测到 `mp.weixin.qq.com` 后，会自动给模型追加
 - 跳过 `web` / `webchat`（SSE 已经覆盖）
 - 调对应渠道适配器的 `sendContentParts(targetId, parts)`
 - WeCom：image / audio / video / file 全部支持，走原生附件
-- Slack：通过 `filesUploadV2` 直传（参考 [Slack channel](./channels#slack)）
 - 不支持 `sendContentParts` 的渠道（QQ 等）：catch UnsupportedOperationException + log，不让一个不支持的渠道卡住整批分发
 
 文件路径在 `data/chat-uploads/{conversationId}/`，serve URL 是 `/api/v1/chat/files/{conversationId}/{storedName}`，前端 / 渠道附件视图都按这个 URL 读。
@@ -412,7 +411,7 @@ grep "wecom-keepalive" logs/ligao.log | tail
 
 ## 相关阅读
 
-- [多渠道接入](./channels) — 9 个渠道的总览 + 设置
+- [多渠道接入](./channels) — 6 个渠道的总览 + 设置
 - [Agent 引擎](./agents) — TLS 重试、错误分类、自循环检测
 - [模型配置](./models) — 怎么换默认模型、failover chain
 - [安全与审批](./security) — 群里执行高风险工具的审批流

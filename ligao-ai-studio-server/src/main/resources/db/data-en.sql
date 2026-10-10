@@ -1164,7 +1164,7 @@ Based on keywords in the user question, select corresponding docs from the table
 | tool, Tool, @Tool, ToolGuard | tools.md |
 | skill, Skill, SKILL.md, skill market | skills.md |
 | MCP, plugin, protocol | mcp.md |
-| channel, DingTalk, Feishu, Telegram, Discord | channels.md |
+| channel, DingTalk, Feishu, WeCom, WeChat, QQ, Web | channels.md |
 | chat, message, SSE, streaming | chat.md |
 | model, Qwen, Ollama, DashScope | models.md |
 | security, JWT, auth, approval | security.md |

@@ -242,7 +242,7 @@ See [Skills](./skills).
 
 `send_file(filePath, fileName?)` reads an **existing file** on the server and delivers it as a **native IM attachment** — not a text download link.
 
-- **Stored in the generated-file cache** — the file is placed in the generated-file cache, and channel adapters (Feishu / DingTalk / Telegram) **auto-detect and deliver** it.
+- **Stored in the generated-file cache** — the file is placed in the generated-file cache, and channel adapters (Feishu / DingTalk) **auto-detect and deliver** it.
 - **Any common file type**, up to a **20 MB** limit.
 - **Contrast with `ReadFileTool`** — `ReadFileTool` **extracts text** from a file to feed the agent's reasoning; `send_file` ships the file **as-is** to the user.
 

@@ -589,19 +589,6 @@ export const CHANNEL_FIELD_DEFS: Record<string, ChannelFieldDef[]> = {
     { key: 'enable_quoted_context', label: '引用消息上下文', placeholder: '', type: 'switch', defaultValue: true, tooltip: '用户引用某条消息回复时，自动拉取被引用消息内容注入到 prompt，agent 才能理解"解释一下"这种缺主语的引用' },
     { key: 'media_download_enabled', label: '媒体下载', placeholder: '', type: 'switch', defaultValue: false, tooltip: '下载消息中的图片和文件到本地（保存至 ~/.ligao-ai-studio/media/feishu/）' },
   ],
-  telegram: [
-    { key: 'bot_token', label: 'Bot Token', placeholder: '123456:ABC-DEF1234ghIkl-zyx57W2v1u123ew11', required: true, sensitive: true, type: 'password', tooltip: '从 @BotFather 获取的 Bot Token' },
-    { key: 'show_typing', label: '显示输入状态', placeholder: '', type: 'switch', defaultValue: true, tooltip: '发送回复前持续显示"正在输入..."状态（每 4 秒刷新）' },
-    { key: 'connection_mode', label: '接入模式', placeholder: '', type: 'select', defaultValue: 'polling', tooltip: 'Long-Polling 无需公网 IP（推荐）；Webhook 需要公网回调地址', options: [{ label: 'Long-Polling（轮询，推荐）', value: 'polling' }, { label: 'Webhook（HTTP 回调）', value: 'webhook' }] },
-    { key: 'polling_timeout', label: '轮询超时（秒）', placeholder: '20', type: 'number', defaultValue: 20, tooltip: 'Long-Polling 超时时间，服务器在有新消息时立即返回', showIf: { field: 'connection_mode', value: 'polling' } },
-    { key: 'webhook_url', label: 'Webhook URL', placeholder: 'https://your-domain.com/api/v1/channels/webhook/telegram', type: 'text', tooltip: '公网可访问的回调地址，系统会自动调用 setWebhook 注册', showIf: { field: 'connection_mode', value: 'webhook' } },
-    { key: 'http_proxy', label: 'HTTP 代理', placeholder: 'http://127.0.0.1:7890', type: 'text', tooltip: 'HTTP 代理地址（国内访问 Telegram API 需要）' },
-  ],
-  discord: [
-    { key: 'bot_token', label: 'Bot Token', placeholder: 'MTxxxxxxxx.xxxxxxxx.xxxxxxxx', required: true, sensitive: true, type: 'password', tooltip: 'Discord Developer Portal 中获取的 Bot Token' },
-    { key: 'accept_bot_messages', label: '接收 Bot 消息', placeholder: '', type: 'switch', defaultValue: false, tooltip: '是否接收来自其他 Bot 的消息' },
-    { key: 'http_proxy', label: 'HTTP 代理', placeholder: 'http://127.0.0.1:7890', type: 'text', tooltip: 'HTTP 代理地址（可选，用于 Gateway WebSocket 和 REST API 连接）' },
-  ],
   wecom: [
     { key: 'bot_id', label: '机器人 ID', placeholder: 'bot_xxxxxxxxxx', required: true, type: 'text', tooltip: '企业微信智能机器人的 Bot ID（在企业微信后台创建智能机器人后获取）' },
     { key: 'secret', label: 'Secret', placeholder: 'xxxxxxxxxxxxxxxx', required: true, sensitive: true, type: 'password', tooltip: '企业微信智能机器人的 Secret' },
@@ -621,11 +608,6 @@ export const CHANNEL_FIELD_DEFS: Record<string, ChannelFieldDef[]> = {
     { key: 'client_secret', label: 'AppSecret', placeholder: 'xxxxxxxxxxxxxxxx', required: true, sensitive: true, type: 'password', tooltip: 'QQ 开放平台机器人的 AppSecret' },
     { key: 'markdown_enabled', label: 'Markdown 消息', placeholder: '', type: 'switch', defaultValue: true, tooltip: '发送消息时使用 Markdown 格式（部分场景下 QQ 可能不支持，可关闭回退到纯文本）' },
     { key: 'max_reconnect_attempts', label: '最大重连次数', placeholder: '100', type: 'number', defaultValue: 100, tooltip: 'WebSocket 断线后最大重连次数' },
-  ],
-  slack: [
-    { key: 'bot_token', label: 'Bot Token', placeholder: 'xoxb-xxxxxxxxxxxx-xxxxxxxxxxxx', required: true, sensitive: true, type: 'password', tooltip: 'Slack Bot User OAuth Token（在 Slack App → OAuth & Permissions 获取）' },
-    { key: 'app_token', label: 'App Token', placeholder: 'xapp-xxxxxxxxxxxx', required: true, sensitive: true, type: 'password', tooltip: 'Slack App-Level Token（需要 connections:write scope，在 Slack App → Basic Information → App-Level Tokens 生成）' },
-    { key: 'signing_secret', label: 'Signing Secret', placeholder: 'xxxxxxxxxxxxxxxx', sensitive: true, type: 'password', tooltip: 'Slack App Signing Secret（用于 Webhook 模式验证请求签名，Socket Mode 可选）' },
   ],
   webchat: [
     { key: 'api_key', label: 'API Key', placeholder: '保存后由平台自动生成', required: true, sensitive: true, readOnly: true, type: 'password', tooltip: '由平台自动生成的嵌入式 WebChat 渠道密钥，创建后可复制使用' },

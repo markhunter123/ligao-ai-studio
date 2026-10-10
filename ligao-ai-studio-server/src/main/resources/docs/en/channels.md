@@ -2,7 +2,7 @@
 
 **Same brain, same memory, everywhere your team works.**
 
-A channel in Ligao is a different door into the same agent. Your team chats in Feishu? Put an agent in Feishu. Someone prefers Telegram? Same agent, same memory, in Telegram. Web console for the operators, DingTalk for the field, Slack for engineering — one deployment, nine doors.
+A channel in Ligao is a different door into the same agent. Your team chats in Feishu? Put an agent in Feishu. Operators use the web console, the field uses DingTalk — one deployment, six doors.
 
 Every channel is an adapter. Underneath the adapter, the agent doesn't know (or care) which door the message came through.
 
@@ -14,7 +14,7 @@ v1.3.0 lands a wave of long-run stability and group-collaboration work in the ch
 - **Group-chat per-sender attribution + debounce boundary** — two people talking in the same group no longer get their messages mixed up
 - **Adaptive debounce window for paste-split long messages** — a long paste broken into five messages auto-merges back into one
 - **WeCom approval cards + keepalive + chunk dedup** — long-task cards survive upstream session timeouts
-- **Async tool results forward back to the originating channel** — employee runs a long task, the result lands in Feishu / DingTalk / WeCom / Slack with files uploaded per-channel
+- **Async tool results forward back to the originating channel** — employee runs a long task, the result lands in Feishu / DingTalk / WeCom with files uploaded per-channel
 - **Scrubbed fake generated-file URLs** — employees no longer hand back `https://example.com/file.docx`-style fictitious links
 
 WeCom-specific tuning lives in [WeCom deep tuning](./wecom-tuning).
@@ -42,7 +42,7 @@ Feishu specifics are spelled out in the [Feishu](#feishu-lark) section below.
 
 ---
 
-## The nine channels
+## The six channels
 
 | Channel | Transport | Streaming | Notes |
 |---------|-----------|-----------|-------|
@@ -51,21 +51,18 @@ Feishu specifics are spelled out in the [Feishu](#feishu-lark) section below.
 | **Feishu (Lark)** | WebSocket / Webhook | — | WebSocket needs no public IP |
 | **WeCom (WeChat Work)** | Long connection / Webhook | — | Long connection preferred |
 | **WeChat Personal** | HTTP long polling (iLink) | — | Experimental / beta |
-| **Telegram** | Long-Polling / Webhook | Typing | Long-Polling needs no public IP |
-| **Discord** | Gateway WebSocket (JDA) | Typing | Auto-reconnect |
 | **QQ** | WebSocket / Callback | — | Official bot platform |
-| **Slack** | Events API / Socket mode | — | Socket mode needs no public IP |
 
 ---
 
 ## How a channel actually works
 
 ```
-┌──────┐ ┌─────────┐ ┌──────┐ ┌──────┐ ┌──────┐ ┌───────┐ ┌────┐ ┌──────┐ ┌──────┐
-│ Web  │ │DingTalk │ │Feishu│ │WeCom │ │ TG   │ │Discord│ │ QQ │ │WeChat│ │Slack │
-└──┬───┘ └────┬────┘ └──┬───┘ └──┬───┘ └──┬───┘ └──┬────┘ └─┬──┘ └──┬───┘ └──┬───┘
-   │          │         │        │        │        │        │        │       │
-   └──────────┴─────────┴────┬───┴────────┴────────┴────────┴────────┴───────┘
+┌──────┐ ┌─────────┐ ┌──────┐ ┌──────┐ ┌────┐ ┌──────┐
+│ Web  │ │DingTalk │ │Feishu│ │WeCom │ │ QQ │ │WeChat│
+└──┬───┘ └────┬────┘ └──┬───┘ └──┬───┘ └─┬──┘ └──┬───┘
+   │          │         │        │       │        │
+   └──────────┴─────────┴────┬───┴───────┴────────┘
                              │
                     ┌────────┴─────────┐
                     │  Channel adapter  │  ← unifies multiple protocols
@@ -94,7 +91,7 @@ Channels are managed through **Channel Management** in the admin UI. The underly
 | Column | What it is |
 |--------|-----------|
 | `name` | Display name |
-| `type` | Channel type (`dingtalk`, `feishu`, `telegram`, …) |
+| `type` | Channel type (`dingtalk`, `feishu`, `wecom`, `qq`, `weixin`, …) |
 | `agent_id` | Which agent handles messages |
 | `config` | JSON object with channel-specific credentials |
 | `enabled` | On/off switch |
@@ -404,91 +401,7 @@ Group multi-user collaboration, quoted messages, appmsg parsing, upload constrai
 
 ---
 
-## Telegram
 
-Long-Polling (default) or Webhook. Long-Polling needs no public IP.
-
-### Create bot
-
-1. Search **@BotFather** in Telegram (look for the blue verified badge)
-2. Send `/newbot`, follow the prompts
-   ![Create Bot](/images/channels/telegram/01-botfather.jpg)
-3. Copy the **Bot Token**
-   ![Get Token](/images/channels/telegram/02-token.jpg)
-
-### Configure
-
-```bash
-curl -X POST http://localhost:18088/api/v1/channels \
-  -H "Content-Type: application/json" \
-  -H "Authorization: Bearer <token>" \
-  -d '{
-    "name": "Telegram Bot",
-    "type": "telegram",
-    "agentId": 1,
-    "config": {
-      "bot_token": "123456:ABC-DEF1234ghIkl-zyx57W2v1u123ew11",
-      "show_typing": true,
-      "polling_timeout": 20
-    },
-    "enabled": true
-  }'
-```
-
-::: tip
-- Long-Polling has exponential backoff reconnection (2s → 30s) built in
-- Typing indicator is refreshed every 4 seconds
-- Users in China may need `http_proxy` configured
-:::
-
----
-
-## Discord
-
-Built on **JDA** — connects via Gateway WebSocket with automatic reconnection.
-
-### Create bot
-
-1. [Discord Developer Portal](https://discord.com/developers/applications)
-   ![Developer Portal](/images/channels/discord/01-developer-portal.png)
-
-2. Create Application
-   ![Create App](/images/channels/discord/02-create-app.png)
-
-3. **Bot** → create a Bot, copy the **Token**
-   ![Bot Token](/images/channels/discord/03-bot-token.png)
-
-4. Enable **Message Content Intent**, grant **Send Messages** + **Attach Files**
-   ![Permissions](/images/channels/discord/04-permissions.png)
-
-5. **OAuth2 > URL Generator** → select `bot` scope → invite to your server
-   ![OAuth2](/images/channels/discord/05-oauth2.png) ![Invite](/images/channels/discord/06-invite.png)
-
-### Configure
-
-```bash
-curl -X POST http://localhost:18088/api/v1/channels \
-  -H "Content-Type: application/json" \
-  -H "Authorization: Bearer <token>" \
-  -d '{
-    "name": "Discord Bot",
-    "type": "discord",
-    "agentId": 1,
-    "config": {
-      "bot_token": "your-bot-token",
-      "accept_bot_messages": false
-    },
-    "enabled": true
-  }'
-```
-
-::: tip
-- No Webhook URL or Interactions Endpoint needed — Gateway WebSocket handles everything
-- Long replies (over 2000 characters) auto-split while preserving code block integrity
-- Message deduplication (LRU cache of 500) prevents duplicate processing during reconnects
-:::
-
----
 
 ## QQ
 
@@ -538,41 +451,6 @@ curl -X POST http://localhost:18088/api/v1/channels \
 
 ---
 
-## Slack
-
-Events API (webhook mode) or Socket Mode (no public IP needed).
-
-### Create app
-
-1. Visit [Slack API — Your Apps](https://api.slack.com/apps) and create a new app
-2. Under **OAuth & Permissions**, grant bot scopes: `chat:write`, `app_mentions:read`, `im:history`, `im:read`, `im:write`, `files:write`
-3. Install the app to your workspace
-4. Copy the **Bot User OAuth Token** (`xoxb-...`)
-5. For Socket Mode: under **Socket Mode**, enable it and generate an **App-Level Token** with `connections:write` (`xapp-...`)
-6. Subscribe to bot events: `app_mention`, `message.im`
-
-### Configure
-
-```bash
-curl -X POST http://localhost:18088/api/v1/channels \
-  -H "Content-Type: application/json" \
-  -H "Authorization: Bearer <token>" \
-  -d '{
-    "name": "Slack Bot",
-    "type": "slack",
-    "agentId": 1,
-    "config": {
-      "bot_token": "xoxb-...",
-      "app_token": "xapp-...",
-      "mode": "socket"
-    },
-    "enabled": true
-  }'
-```
-
-Webhook URL (webhook mode): `https://your-domain/api/v1/channels/webhook/slack`
-
----
 
 ## WeChat Personal (iLink)
 
@@ -653,10 +531,9 @@ As of 1.4.0, IM channel conversations **remember a per-conversation model**, jus
 ## Things worth knowing
 
 - **Webhook mode needs HTTPS.** Production deployments should front Ligao with Nginx + SSL.
-- **Long-connection modes need no public IP.** Telegram Long-Polling, DingTalk Stream, Feishu WebSocket, Discord Gateway, Slack Socket mode, WeCom Long connection — all run behind NAT.
+- **Long-connection modes need no public IP.** DingTalk Stream, Feishu WebSocket, WeCom Long connection — all run behind NAT.
 - **One channel, one agent.** Different channels can point at different agents.
 - **Credentials are encrypted at rest** in `ligao_channel`.
-- **China networks** often need `http_proxy` configured for Telegram and Discord.
 
 ---
 

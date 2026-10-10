@@ -203,7 +203,7 @@ const wizardType = ref<string>('')
 // ChannelOnboardingWizard.vue. The legacy modal stays only for editing
 // existing channels (where 3-step would feel like ceremony).
 const WIZARD_TYPES = new Set([
-  'telegram', 'discord', 'slack', 'qq',
+  'qq',
   'web', 'webchat', 'webhook',
   'wecom', 'weixin', 'dingtalk', 'feishu',
 ])
@@ -531,7 +531,7 @@ async function toggleChannel(channel: Channel) {
 
 // ==================== Channel icon ====================
 
-const CHANNEL_ICON_TYPES = ['web', 'dingtalk', 'feishu', 'wecom', 'weixin', 'telegram', 'discord', 'qq', 'slack', 'webchat', 'webhook']
+const CHANNEL_ICON_TYPES = ['web', 'dingtalk', 'feishu', 'wecom', 'weixin', 'qq', 'webchat', 'webhook']
 function getChannelIconPath(type: string) {
   const name = CHANNEL_ICON_TYPES.includes(type) ? type : 'default'
   return `/icons/channels/${name}.svg`

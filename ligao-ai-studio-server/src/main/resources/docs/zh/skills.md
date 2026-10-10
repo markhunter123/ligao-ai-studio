@@ -424,7 +424,7 @@ LESSONS 在技能详情抽屉的 **Memory tab** 里查看和编辑。
 
 ## 密钥（Secrets）：把 token 放对地方
 
-很多技能要 API 凭证才能跑——腾讯会议要 `TENCENT_MEETING_TOKEN`、Slack 要 bot token、Linear 要 personal API key。这些东西**不能写进 SKILL.md**（会进 prompt，泄露给 LLM）、不能写进 scripts（commit 到代码就完了）、改 `~/.zshrc` 又要重启服务器、桌面端跨机更带不走。
+很多技能要 API 凭证才能跑——腾讯会议要 `TENCENT_MEETING_TOKEN`、Linear 要 personal API key。这些东西**不能写进 SKILL.md**（会进 prompt，泄露给 LLM）、不能写进 scripts（commit 到代码就完了）、改 `~/.zshrc` 又要重启服务器、桌面端跨机更带不走。
 
 v1.3 起，每个技能自带一个 **per-skill 密钥仓**。
 

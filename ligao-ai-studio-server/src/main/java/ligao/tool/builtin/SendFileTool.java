@@ -20,7 +20,7 @@ import java.util.Map;
  * <p>
  * Reads the file at the given path and stores it in {@link GeneratedFileCache}
  * to mint a short-lived download link, which channel adapters (Feishu, DingTalk,
- * Telegram, etc.) auto-detect and deliver as a native attachment.
+ * etc.) auto-detect and deliver as a native attachment.
  * <p>
  * Unlike {@link ReadFileTool}, this handles any file type (including binary
  * files): the goal is to deliver the file as an attachment rather than read

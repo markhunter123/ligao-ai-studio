@@ -20,7 +20,7 @@ Every IT department and CISO in 2025–2026 has the same question before buying 
 
 Anyone who tells you "AI won't go off the rails" is lying. Ligao's answer is different — **the agent asks you first when it matters.**
 
-When the agent wants to delete a file, send an email, run a write-side SQL, or hit a paid API — any tool call matched by a Tool Guard rule **pauses mid-turn**. An approval notification is pushed to your IM (Feishu / DingTalk / Slack / email). You tap approve, the agent resumes from where it stopped. Every action lands in `ligao_tool_guard_audit_log` — append-only, retained as long as you want, CSV-exportable.
+When the agent wants to delete a file, send an email, run a write-side SQL, or hit a paid API — any tool call matched by a Tool Guard rule **pauses mid-turn**. An approval notification is pushed to your IM (Feishu / DingTalk / WeCom / email). You tap approve, the agent resumes from where it stopped. Every action lands in `ligao_tool_guard_audit_log` — append-only, retained as long as you want, CSV-exportable.
 
 **Agentic — it acts. Not autonomous — it doesn't act on its own initiative for the things that matter.**
 
@@ -217,7 +217,7 @@ In addition to user-defined rules, Ligao's shell tool has built-in detection for
 When a rule evaluates to `require_approval`, Ligao doesn't fail the call. It **suspends the agent mid-turn**, creates a pending approval, surfaces it to the user, and resumes exactly where it left off once the user decides.
 
 ::: tip From 1.3.0: workflows ride the same approval rail
-The v1.3.0 [workflow](./workflow) `await_approval` step suspends the entire workflow run on the same `ligao_tool_approval` table — persisted across restarts. Approval requests fan out to the approver's channel (Feishu / DingTalk / Slack / WeCom); once resolved, the workflow runtime auto-resumes the next step. One audit log, one notification pipeline, one "pause / resume" semantic — covering both agent tool calls and workflow steps.
+The v1.3.0 [workflow](./workflow) `await_approval` step suspends the entire workflow run on the same `ligao_tool_approval` table — persisted across restarts. Approval requests fan out to the approver's channel (Feishu / DingTalk / WeCom); once resolved, the workflow runtime auto-resumes the next step. One audit log, one notification pipeline, one "pause / resume" semantic — covering both agent tool calls and workflow steps.
 :::
 
 ### How it flows

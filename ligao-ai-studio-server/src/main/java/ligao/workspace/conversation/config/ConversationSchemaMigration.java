@@ -49,8 +49,6 @@ public class ConversationSchemaMigration implements ApplicationRunner {
                   AND (
                       conversation_id LIKE 'feishu:%'
                    OR conversation_id LIKE 'dingtalk:%'
-                   OR conversation_id LIKE 'telegram:%'
-                   OR conversation_id LIKE 'discord:%'
                    OR conversation_id LIKE 'wecom:%'
                    OR conversation_id LIKE 'qq:%'
                    OR conversation_id LIKE 'weixin:%'

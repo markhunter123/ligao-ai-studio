@@ -1,6 +1,6 @@
 ---
 title: Ligao Introduction — Self-hosted Multi-Agent AI Operating System
-description: Ligao is an open-source multi-agent AI OS built on Spring AI Alibaba. ReAct + Plan-and-Execute engines, LLM Wiki knowledge base, 4-layer memory lifecycle, MCP tool protocol, 8-channel integration. One JAR, zero data egress.
+description: Ligao is an open-source multi-agent AI OS built on Spring AI Alibaba. ReAct + Plan-and-Execute engines, LLM Wiki knowledge base, 4-layer memory lifecycle, MCP tool protocol, 6-channel integration. One JAR, zero data egress.
 head:
   - - meta
     - name: keywords
@@ -47,7 +47,7 @@ Ligao fights a different fight. It's **all of it, under one roof, on hardware yo
 
 **It holds real tools.** Built-in tools for search, file IO, time, shell, image, music, video, STT, and TTS. MCP servers for anything else. Skill packages you write in a `SKILL.md` and drop into a workspace. Everything gated by Tool Guard and optional human approval — strong hands, firm limits.
 
-**It shows up everywhere.** Web console, a desktop app that bundles JRE 21 so your users don't install Java, and eight chat channels: DingTalk, Feishu, WeCom, WeChat, Telegram, Discord, QQ, Slack. The same agent answers a Slack thread, a Feishu DM, and a web chat — same memory, same skills, same personality.
+**It shows up everywhere.** Web console, a desktop app that bundles JRE 21 so your users don't install Java, and six chat channels: DingTalk, Feishu, WeCom, WeChat, QQ, and Web. The same agent answers a DingTalk thread, a Feishu DM, and a web chat — same memory, same skills, same personality.
 
 ---
 

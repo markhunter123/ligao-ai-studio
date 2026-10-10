@@ -15,7 +15,7 @@ import java.util.Set;
  * <p>
  * Without this dispatcher, completion bytes only land in
  * {@code ligao_message} + a Web SSE broadcast — IM users (WeCom / DingTalk /
- * Feishu / Telegram / etc.) see nothing arrive in their chat client because
+ * Feishu / etc.) see nothing arrive in their chat client because
  * the tool pipeline doesn't know about channel adapters. This dispatcher
  * closes that loop: look up the conversation's bound channel session, get
  * the live adapter from {@link ChannelManager}, and call

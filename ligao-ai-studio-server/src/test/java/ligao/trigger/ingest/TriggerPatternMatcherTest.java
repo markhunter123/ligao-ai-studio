@@ -47,7 +47,7 @@ class TriggerPatternMatcherTest {
         // channelType lives in envelope.data() — the controller stuffs it
         // there because the envelope record itself is generic.
         assertTrue(matcher.matches(t, envelope("channel_message", Map.of("channelType", "feishu"))));
-        assertFalse(matcher.matches(t, envelope("channel_message", Map.of("channelType", "telegram"))));
+        assertFalse(matcher.matches(t, envelope("channel_message", Map.of("channelType", "wecom"))));
         assertFalse(matcher.matches(t, envelope("channel_message", Map.of())));
     }
 

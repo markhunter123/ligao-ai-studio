@@ -58,7 +58,7 @@ public class HtmlImageRenderTool {
         Use this whenever the user wants an HTML artifact (architecture
         diagram, infographic, dashboard, mockup, ...) delivered as an
         *image* — especially when the chat is happening on an IM channel
-        (WeCom / 企业微信, DingTalk, Feishu, Telegram, Discord) where users
+        (WeCom / 企业微信, DingTalk, Feishu) where users
         cannot click through a raw HTML link.
 
         The returned URL is `/api/v1/files/generated/<id>` with MIME

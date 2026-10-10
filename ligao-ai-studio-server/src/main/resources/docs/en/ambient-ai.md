@@ -4,7 +4,7 @@ description: Cron jobs + multi-channel delivery = ambient AI. Push your morning 
 head:
   - - meta
     - name: keywords
-      content: ambient AI,proactive AI,cron jobs,multi-channel delivery,Feishu briefing,DingTalk push,Slack bot,scheduled agent,morning briefing
+      content: ambient AI,proactive AI,cron jobs,multi-channel delivery,Feishu briefing,DingTalk push,scheduled agent,morning briefing
 ---
 
 # Ambient AI
@@ -19,7 +19,7 @@ You can have any agent show up at any time, in any messenger you use, **and find
 
 ```
 Daily 9:00 AM: Briefing agent → Feishu engineering room
-Weekly Mondays 10:00: Sales agent → Slack channel
+Weekly Mondays 10:00: Sales agent → Feishu channel
 4:00 AM job failure → Operations agent → DingTalk DM
 ```
 
@@ -51,7 +51,7 @@ You sit on the subway, your phone vibrates, you read the three things. Before yo
 
 ### 2. Weekly digest
 
-> Every Monday at 10:00 AM, the sales assistant agent queries last week's order database, extracts key metrics, writes a digest with tables, pushes to a Slack channel.
+> Every Monday at 10:00 AM, the sales assistant agent queries last week's order database, extracts key metrics, writes a digest with tables, pushes to a Feishu channel.
 
 Data comes through the [datasource tools](./config); the agent writes SQL and explains the result. If past digests live in your Wiki, they're auto-cited as comparison.
 
@@ -69,7 +69,7 @@ Event triggers ride a high-frequency cron with a condition check, or wire an ext
 
 1. **Cron expression** — when it runs (standard 6-field cron, with a UI builder)
 2. **Agent** — pick an agent already configured with the right tools and system prompt
-3. **Output channel** — pick a [channel](./channels) for the result (Feishu / DingTalk / Slack / WeCom / Telegram / any configured channel)
+3. **Output channel** — pick a [channel](./channels) for the result (Feishu / DingTalk / WeCom / any configured channel)
 
 Save. Next time the trigger fires, the agent goes to work.
 
@@ -91,7 +91,7 @@ All of them tried to do it with new hardware.
 
 Ligao's answer is the opposite: **the messengers your team already uses are the hardware.**
 
-Feishu, DingTalk, WeCom, Slack, Telegram, Discord, QQ — they're already open on your phone and your desktop. AI showing up where you're already looking is enough. **No new device. No new habit.**
+Feishu, DingTalk, WeCom, QQ — they're already open on your phone and your desktop. AI showing up where you're already looking is enough. **No new device. No new habit.**
 
 ---
 
@@ -109,7 +109,7 @@ Only Ligao fills out the right column completely, because only Ligao has all of 
 
 - **Multi-agent runtime** (ReAct + Plan-Execute)
 - **Cron scheduling + retry**
-- **9 IM channel adapters** with exponential-backoff reconnect
+- **6 IM channel adapters** with exponential-backoff reconnect
 - **Persistent memory** ([Memory](./memory) — Dreaming makes it know you better every day)
 - **Wiki knowledge layer** ([LLM Wiki](./wiki) — gives the agent something to base research on)
 - **Tool Guard** ([Security](./security) — sensitive ops still ask you first)

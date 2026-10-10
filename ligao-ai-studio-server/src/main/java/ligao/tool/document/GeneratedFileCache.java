@@ -330,7 +330,7 @@ public class GeneratedFileCache {
      * <p>Cache misses are nearly always LLM hallucinations — the model
      * emitted a UUID-shaped string without ever calling a render tool.
      * Without this scrub, every channel that receives the answer (Web,
-     * Slack, DingTalk, Telegram, …) would render a clickable link that
+     * DingTalk, …) would render a clickable link that
      * 404s, and IM clients save the 404 HTML body as a {@code .docx}
      * which users then report as "corrupted file".
      */

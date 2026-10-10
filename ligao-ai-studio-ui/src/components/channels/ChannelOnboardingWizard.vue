@@ -337,7 +337,7 @@ const { t } = useI18n()
 // Channel types whose verifiers exist on the backend right now. The list
 // matches RFC-084 §4.3 — extending it requires no UI change, just register
 // a new ChannelVerifier bean.
-const VERIFIABLE_TYPES = new Set(['telegram', 'discord', 'slack', 'wecom', 'weixin', 'dingtalk', 'feishu'])
+const VERIFIABLE_TYPES = new Set(['wecom', 'weixin', 'dingtalk', 'feishu'])
 
 // Channel types whose Step 1 is an OAuth/QR scan instead of a credential
 // paste form. Once the scan callback delivers credentials, Step 1 hands
@@ -566,19 +566,6 @@ const canSubmitConfig = computed(() => {
 
 const webhookGuide = computed(() => {
   const guides: Record<string, string[]> = {
-    telegram: [
-      t('channels.guide.telegram.step1'),
-      t('channels.guide.telegram.step2'),
-      t('channels.guide.telegram.step3'),
-      t('channels.guide.telegram.step4'),
-    ],
-    discord: [
-      t('channels.guide.discord.step1'),
-      t('channels.guide.discord.step2'),
-      t('channels.guide.discord.step3'),
-      t('channels.guide.discord.step4'),
-      t('channels.guide.discord.step5'),
-    ],
     qq: [
       t('channels.guide.qq.step1'),
       t('channels.guide.qq.step2'),

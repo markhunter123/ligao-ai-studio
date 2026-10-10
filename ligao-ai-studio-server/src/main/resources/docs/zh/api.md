@@ -621,13 +621,10 @@ curl -N -X POST http://localhost:18088/api/v1/chat/stream \
 | `POST` | `/api/v1/channels/webhook/dingtalk` | `钉钉消息回调` |
 | `POST` | `/api/v1/channels/webhook/dingtalk/register/begin` | `启动钉钉扫码注册应用流程` |
 | `GET` | `/api/v1/channels/webhook/dingtalk/register/status` | `查询钉钉扫码注册状态` |
-| `POST` | `/api/v1/channels/webhook/discord` | `Discord 消息回调（已废弃：Discord 已切换为 Gateway WebSocket 模式）` |
 | `POST` | `/api/v1/channels/webhook/feishu` | `飞书消息回调` |
 | `POST` | `/api/v1/channels/webhook/feishu/register/begin` | `启动飞书扫码注册应用流程` |
 | `GET` | `/api/v1/channels/webhook/feishu/register/status` | `查询飞书扫码注册状态` |
-| `POST` | `/api/v1/channels/webhook/slack` | `Slack Events API 回调` |
 | `GET` | `/api/v1/channels/webhook/status` | `获取渠道运行状态` |
-| `POST` | `/api/v1/channels/webhook/telegram` | `Telegram 消息回调` |
 | `POST` | `/api/v1/channels/webhook/wecom` | `企业微信消息回调（智能机器人模式不使用，保留兼容）` |
 | `GET` | `/api/v1/channels/webhook/weixin/qrcode` | `获取微信登录二维码` |
 | `GET` | `/api/v1/channels/webhook/weixin/qrcode/status` | `查询微信二维码扫码状态` |

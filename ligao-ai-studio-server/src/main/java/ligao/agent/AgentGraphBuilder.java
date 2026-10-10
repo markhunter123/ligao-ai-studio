@@ -1406,7 +1406,7 @@ public class AgentGraphBuilder {
                 - `user`: preferences, expertise, communication style, role
                 - `feedback`: behavioral corrections or confirmed approaches (include WHY)
                 - `project`: decisions, deadlines, constraints not derivable from code/git
-                - `reference`: pointers to external systems (Linear boards, Grafana dashboards, Slack channels)
+                - `reference`: pointers to external systems (Linear boards, Grafana dashboards)
 
                 Use workspace memory tools (MEMORY.md, daily notes) for long-form narrative notes.
                 Use structured memory tools for key-value facts the system can query efficiently.

@@ -185,7 +185,7 @@ public interface ChannelAdapter {
      * (thread id, multi-bot account id, future ext fields).
      *
      * <p>Default implementation delegates to {@link #proactiveSend(String, String)},
-     * dropping hints — concrete adapters (Slack, Telegram) override this
+     * dropping hints — concrete adapters override this
      * variant to read {@code threadId} and route into the threading API.
      */
     default void proactiveSend(String targetId, String content, DeliveryOptions options) {
@@ -206,7 +206,7 @@ public interface ChannelAdapter {
     /**
      * 获取渠道类型标识
      *
-     * @return 渠道类型，如 "web", "dingtalk", "feishu", "telegram"
+     * @return 渠道类型，如 "web", "dingtalk", "feishu"
      */
     String getChannelType();
 
@@ -229,7 +229,7 @@ public interface ChannelAdapter {
      * so only one node connects at a time, and failover to another node when
      * the lease holder dies.
      *
-     * <p>Webhook-based channels (DingTalk, WeCom, Slack, …) should leave this
+     * <p>Webhook-based channels (DingTalk, WeCom, …) should leave this
      * at the default {@code false}: inbound HTTP traffic is fanned out by the
      * load balancer, so every node may safely subscribe.
      *

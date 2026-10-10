@@ -26,7 +26,7 @@ dependencies:
 
 ## 支持渠道
 
-`console`、`dingtalk`、`feishu`、`telegram`、`discord`、`qq`、`slack`
+`console`、`dingtalk`、`feishu`、`wecom`、`wechat`、`qq`
 
 ## 工作流程
 

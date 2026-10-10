@@ -140,7 +140,7 @@ When the 20 built-in tools aren't enough, these two doors open up.
 
 `Channels → pick a platform → paste credentials`
 
-Eight channels: DingTalk, Feishu, WeCom, WeChat Personal, Telegram, Discord, QQ, Slack.
+Five channels: DingTalk, Feishu, WeCom, WeChat Personal, QQ.
 
 ::: tip DingTalk & Feishu: just scan a QR (v1.1.0+)
 No more "go to the open platform → create app → copy ID and Secret" detour. In the new channel form, click **Bind via QR**, scan with the DingTalk / Feishu app, confirm — **client_id / app_id and the secret auto-fill**. Under 30 seconds end to end.

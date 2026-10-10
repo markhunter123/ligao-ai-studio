@@ -497,7 +497,6 @@ public class McpSkillBridge {
         if (n.contains("gitlab")) return "🦊";
         if (n.contains("filesystem") || n.contains("file")) return "📁";
         if (n.contains("postgres") || n.contains("mysql") || n.contains("sql") || n.contains("db")) return "🗄️";
-        if (n.contains("slack")) return "💬";
         if (n.contains("notion")) return "📝";
         if (n.contains("memory")) return "🧠";
         if (n.contains("brave") || n.contains("search")) return "🔍";
@@ -511,7 +510,7 @@ public class McpSkillBridge {
         if (n.contains("file")) return "file";
         if (n.contains("sql") || n.contains("postgres") || n.contains("db")) return "data";
         if (n.contains("search") || n.contains("brave")) return "web";
-        if (n.contains("slack") || n.contains("notion")) return "comm";
+        if (n.contains("notion")) return "comm";
         return "system";
     }
 

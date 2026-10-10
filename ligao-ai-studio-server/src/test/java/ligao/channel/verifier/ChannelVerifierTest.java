@@ -38,36 +38,6 @@ class ChannelVerifierTest {
     }
 
     @Test
-    void telegramVerifier_failsFast_withoutToken() {
-        TelegramVerifier verifier = new TelegramVerifier(objectMapper);
-        VerificationResult r = verifier.verify(new VerificationRequest(
-                "telegram", Collections.emptyMap(), 1L));
-        assertFalse(r.ok());
-        assertEquals("bot_token", r.invalidField());
-        // Should not reach the network — duration is 0.
-        assertEquals(0, r.durationMs());
-    }
-
-    @Test
-    void discordVerifier_failsFast_withoutToken() {
-        DiscordVerifier verifier = new DiscordVerifier(objectMapper);
-        VerificationResult r = verifier.verify(new VerificationRequest(
-                "discord", Collections.emptyMap(), 1L));
-        assertFalse(r.ok());
-        assertEquals("bot_token", r.invalidField());
-        assertEquals(0, r.durationMs());
-    }
-
-    @Test
-    void slackVerifier_failsFast_withoutToken() {
-        SlackVerifier verifier = new SlackVerifier();
-        VerificationResult r = verifier.verify(new VerificationRequest(
-                "slack", Collections.emptyMap(), 1L));
-        assertFalse(r.ok());
-        assertEquals("bot_token", r.invalidField());
-    }
-
-    @Test
     void wecomVerifier_failsFast_withoutCredentials() {
         WeComVerifier verifier = new WeComVerifier(objectMapper);
         VerificationResult missingBoth = verifier.verify(new VerificationRequest(
@@ -121,12 +91,12 @@ class ChannelVerifierTest {
 
     @Test
     void registry_indexesByChannelType_andLetsLastWin() {
-        TelegramVerifier first = new TelegramVerifier(objectMapper);
-        TelegramVerifier second = new TelegramVerifier(objectMapper);
+        WeixinVerifier first = new WeixinVerifier(objectMapper);
+        WeixinVerifier second = new WeixinVerifier(objectMapper);
         ChannelVerifierRegistry registry = new ChannelVerifierRegistry(java.util.List.of(first, second));
         registry.index();
-        assertTrue(registry.find("telegram").isPresent());
-        assertSame(second, registry.find("telegram").orElseThrow());
+        assertTrue(registry.find("weixin").isPresent());
+        assertSame(second, registry.find("weixin").orElseThrow());
         assertTrue(registry.find("nonexistent").isEmpty());
     }
 }

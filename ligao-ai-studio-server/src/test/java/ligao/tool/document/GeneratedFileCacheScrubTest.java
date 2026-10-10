@@ -13,7 +13,7 @@ import static org.junit.jupiter.api.Assertions.*;
  * Pin the cache-side scrubber that powers the server-wide fake-URL guard.
  *
  * <p>Without this guard, an LLM-hallucinated {@code /api/v1/files/generated/{id}}
- * URL surfaces verbatim to every channel (Web, Slack, DingTalk, Telegram, …),
+ * URL surfaces verbatim to every channel (Web, DingTalk, WeCom, …),
  * users tap it, and the IM client saves the resulting 404 HTML body as a
  * {@code .docx} which they then report as a "corrupted file". These tests
  * pin the cache-vs-text contract so future callers (FinalAnswerNode,

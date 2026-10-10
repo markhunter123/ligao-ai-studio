@@ -20,7 +20,7 @@ Ligao 给 Agent 真实的能力——shell 访问、文件写入、浏览器自�
 
 任何说"AI 不会跑飞"的人都在骗你。Ligao 的答案不一样——**敏感操作问你一句再执行。**
 
-Agent 想删文件、发邮件、跑写入型 SQL、调付费 API——任何一条 Tool Guard 规则匹配上的调用，会**在回合中途暂停**，审批通知推到你的 IM（飞书 / 钉钉 / Slack / 邮件），你点批准，Agent 从暂停的地方接着跑。每一个动作进 `ligao_tool_guard_audit_log`——按时间序、永远保留、可导出 CSV。
+Agent 想删文件、发邮件、跑写入型 SQL、调付费 API——任何一条 Tool Guard 规则匹配上的调用，会**在回合中途暂停**，审批通知推到你的 IM（飞书 / 钉钉 / 企微 / 邮件），你点批准，Agent 从暂停的地方接着跑。每一个动作进 `ligao_tool_guard_audit_log`——按时间序、永远保留、可导出 CSV。
 
 **会动手（agentic），但不擅自动手（not autonomous）。**
 
@@ -217,7 +217,7 @@ curl -X POST http://localhost:18088/api/v1/security/guard/rules \
 当一条规则评估为 `require_approval` 时，Ligao 不会简单地让调用失败。它会**在回合中途挂起 Agent**，创建一条 pending approval，呈现给用户，等用户决定之后**从暂停的地方恢复执行**。
 
 ::: tip 1.3.0 起：工作流也走同一套审批
-v1.3.0 的 [工作流](./workflow) `await_approval` step 通过同一套 `ligao_tool_approval` 表挂起整条 workflow run，跨服务重启不丢；审批结果通过 channel 通知（飞书 / 钉钉 / Slack / 企微）推回审批人，resolve 后 workflow runtime 自动 resume 下一 step。也就是说——同一份审计、同一份通知、同一种"暂停—恢复"语义，同时覆盖 Agent 工具调用和 workflow step。
+v1.3.0 的 [工作流](./workflow) `await_approval` step 通过同一套 `ligao_tool_approval` 表挂起整条 workflow run，跨服务重启不丢；审批结果通过 channel 通知（飞书 / 钉钉 / 企微）推回审批人，resolve 后 workflow runtime 自动 resume 下一 step。也就是说——同一份审计、同一份通知、同一种"暂停—恢复"语义，同时覆盖 Agent 工具调用和 workflow step。
 :::
 
 ### 工作流

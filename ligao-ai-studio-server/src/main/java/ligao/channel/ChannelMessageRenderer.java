@@ -21,8 +21,6 @@ public final class ChannelMessageRenderer {
 
     /** 各平台消息字数限制 */
     public static final Map<String, Integer> PLATFORM_LIMITS = Map.of(
-            "telegram", 4096,
-            "discord", 2000,
             "dingtalk", 20000,
             "feishu", 10000,
             "wecom", 2048,

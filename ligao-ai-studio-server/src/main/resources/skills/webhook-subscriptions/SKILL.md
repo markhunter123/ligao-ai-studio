@@ -74,7 +74,7 @@ the agent webhook subscribe <名称> \
   --events "事件1,事件2" \
   --description "此订阅的用途" \
   --skills "技能1,技能2" \
-  --deliver telegram \
+  --deliver dingtalk \
   --deliver-chat-id "12345" \
   --secret "可选的自定义密钥"
 ```
@@ -115,7 +115,7 @@ the agent webhook test <名称> --payload '{"key": "value"}'
 the agent webhook subscribe github-issues \
   --events "issues" \
   --prompt "新的 GitHub Issue #{issue.number}: {issue.title}\n\n操作: {action}\n作者: {issue.user.login}\n内容:\n{issue.body}\n\n请对此 Issue 进行分类处理。" \
-  --deliver telegram \
+  --deliver feishu \
   --deliver-chat-id "-100123456789"
 ```
 
@@ -139,7 +139,7 @@ the agent webhook subscribe github-prs \
 the agent webhook subscribe stripe-payments \
   --events "payment_intent.succeeded,payment_intent.payment_failed" \
   --prompt "支付 {data.object.status}: {data.object.amount} 分，来自 {data.object.receipt_email}" \
-  --deliver telegram \
+  --deliver wecom \
   --deliver-chat-id "-100123456789"
 ```
 
@@ -148,7 +148,7 @@ the agent webhook subscribe stripe-payments \
 the agent webhook subscribe ci-builds \
   --events "pipeline" \
   --prompt "构建 {object_attributes.status}，项目 {project.name}，分支 {object_attributes.ref}\n提交: {commit.message}" \
-  --deliver discord \
+  --deliver wechat \
   --deliver-chat-id "1234567890"
 ```
 
@@ -164,14 +164,14 @@ the agent webhook subscribe alerts \
 如果只需要将通知推送到用户聊天中——无需推理、不走 Agent 循环——添加 `--deliver-only`。渲染后的 `--prompt` 模板将直接作为消息正文投递到目标适配器。
 
 适用于：
-- 外部服务推送通知（Supabase/Firebase webhook → Telegram）
+- 外部服务推送通知（Supabase/Firebase webhook → DingTalk）
 - 需要原样转发的监控告警
 - Agent 间通知：一个 Agent 向另一个 Agent 的用户传达消息
 - 任何不需要 LLM 处理的 webhook
 
 ```bash
 the agent webhook subscribe antenna-matches \
-  --deliver telegram \
+  --deliver dingtalk \
   --deliver-chat-id "123456789" \
   --deliver-only \
   --prompt "🎉 新匹配: {match.user_name} 与你匹配成功！" \
@@ -180,7 +180,7 @@ the agent webhook subscribe antenna-matches \
 
 投递成功时 POST 返回 `200 OK`，目标投递失败时返回 `502`——上游服务可据此进行智能重试。HMAC 认证、速率限制和幂等性仍然生效。
 
-要求 `--deliver` 为真实目标（telegram、discord、slack、github_comment 等）——`--deliver log` 会被拒绝，因为仅记录日志的直接投递没有意义。
+要求 `--deliver` 为真实目标（dingtalk、feishu、wecom、wechat、qq、github_comment 等）——`--deliver log` 会被拒绝，因为仅记录日志的直接投递没有意义。
 
 ## 安全
 
@@ -194,7 +194,7 @@ the agent webhook subscribe antenna-matches \
 1. `the agent webhook subscribe` 写入 `~/.ligao/webhook_subscriptions.json`
 2. Webhook 适配器在每次收到请求时热加载该文件（基于 mtime 判断，开销可忽略）
 3. 当有 POST 请求匹配到某条路由时，适配器格式化提示并触发 Agent 运行
-4. Agent 的回复将被投递到配置的目标渠道（Telegram、Discord、GitHub 评论等）
+4. Agent 的回复将被投递到配置的目标渠道（钉钉、飞书、企业微信、微信、QQ、GitHub 评论等）
 
 ## 故障排查
 

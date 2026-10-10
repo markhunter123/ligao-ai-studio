@@ -32,9 +32,6 @@
           <option value="feishu">feishu</option>
           <option value="dingtalk">dingtalk</option>
           <option value="wecom">wecom</option>
-          <option value="telegram">telegram</option>
-          <option value="discord">discord</option>
-          <option value="slack">slack</option>
           <option value="qq">qq</option>
           <option value="web">web</option>
         </select>

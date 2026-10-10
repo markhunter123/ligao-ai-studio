@@ -225,10 +225,10 @@ Card grid of skill packages.
 
 **Route:** `/channels`
 
-Card grid for eight IM channels plus web.
+Card grid for six chat channels plus web.
 
 - Each card: icon, name, type, description, enabled, real-time connection indicator
-- Add channel (DingTalk / Feishu / WeCom / WeChat / Telegram / Discord / QQ / Slack)
+- Add channel (DingTalk / Feishu / WeCom / WeChat / QQ / Web)
 - Edit, toggle, delete
 - Health view — channel health monitor results
 

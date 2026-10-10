@@ -773,7 +773,7 @@ public class ChannelMessageRouter {
                     savedAssistantId = processWithStreaming(message, streamingAdapter, conversationId, agentId, promptText, channelEntity, chatOrigin);
                 } else {
                     // Sync path for non-streaming IM adapters (feishu / wecom / weixin /
-                    // slack / discord / qq / telegram). We can't use agentService.chat()
+                    // qq). We can't use agentService.chat()
                     // because its collector filters out `delta.isEvent()` deltas — that
                     // would silently drop plan_created / plan_step_* events that the Web
                     // Console mirror needs to render PlanStepsPanel. Instead we consume
@@ -1333,7 +1333,7 @@ public class ChannelMessageRouter {
      * <p>Prefer {@code senderName} when populated; otherwise fall back to
      * {@code senderId}. WeCom currently sets both to the same opaque
      * openid which is still useful for disambiguation; future channels
-     * (DingTalk, Slack) carry friendlier display names that flow through
+     * (DingTalk) carry friendlier display names that flow through
      * unchanged.
      *
      * @return sender tag like {@code [@Alice]}, or {@code null} if the

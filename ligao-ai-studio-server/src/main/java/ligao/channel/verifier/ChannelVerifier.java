@@ -4,8 +4,8 @@ package ligao.channel.verifier;
  * Pre-flight credential verifier for a single channel type.
  * <p>
  * Implementations validate a draft channel configuration by performing the
- * cheapest possible auth probe against the upstream service (e.g. Telegram
- * {@code getMe}, Slack {@code auth.test}, Discord {@code users/@me}). They
+ * cheapest possible auth probe against the upstream service (e.g. DingTalk
+ * {@code gettoken}, Feishu {@code tenant_access_token}). They
  * MUST be side-effect free: no persistence, no shared connection state, no
  * impact on running adapters. Network errors are reported via
  * {@link VerificationResult#failed} rather than thrown.
@@ -23,7 +23,7 @@ package ligao.channel.verifier;
 public interface ChannelVerifier {
 
     /**
-     * Channel type discriminator, e.g. {@code "telegram"}, {@code "slack"}.
+     * Channel type discriminator, e.g. {@code "dingtalk"}, {@code "feishu"}.
      * Must match the {@code channelType} column in {@code ligao_channel}.
      */
     String getChannelType();

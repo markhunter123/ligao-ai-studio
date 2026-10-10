@@ -184,8 +184,8 @@ export const conversationApi = {
   /**
    * Pin this conversation to a specific (provider, model). Closes issue
    * #183 — lets the admin UI switch model for IM-channel conversations
-   * (Feishu / DingTalk / WeCom / Telegram / Discord / QQ / Slack / WeChat),
-   * not just for the Web channel. Both params required and non-empty.
+   * (Feishu / DingTalk / WeCom / QQ / WeChat), not just for the Web
+   * channel. Both params required and non-empty.
    */
   setModel: (conversationId: string, modelProvider: string, modelName: string) =>
     http.put(`/conversations/${conversationId}/model`, { modelProvider, modelName }),

@@ -57,7 +57,7 @@ You've got a working install. Now what?
 
 **Build your first knowledge base.** `Wiki → New Knowledge Base`. Drop in a PDF or point at a local folder. Wait for digestion (you'll see the progress bar on each raw material row). When it's done, bind the KB to an agent and ask a question about the content. See [LLM Wiki](./wiki) for what's happening under the hood.
 
-**Connect a chat channel.** `Channels` → pick Telegram, DingTalk, or any of the eight supported platforms. Paste the bot credentials. The same agent starts answering in that channel with the same memory it has on your desktop.
+**Connect a chat channel.** `Channels` → pick DingTalk, Feishu, WeCom, WeChat, QQ, or Web. Paste the credentials. The same agent starts answering in that channel with the same memory it has on your desktop.
 
 Each of those has its own page in the sidebar when you're ready to go deeper.
 

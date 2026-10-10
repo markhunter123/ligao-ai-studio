@@ -106,7 +106,7 @@ class AbstractCronResultDeliveryTest {
         // Claim returns 1, then markNotDelivered returns 1
         when(runMapper.update(any(), any(Wrapper.class))).thenReturn(1, 1);
 
-        RuntimeException oops = new RuntimeException("Slack 503 Service Unavailable");
+        RuntimeException oops = new RuntimeException("Upstream 503 Service Unavailable");
         AbstractCronResultDelivery strategy = new AbstractCronResultDelivery(runMapper) {
             @Override public boolean supports(CronJobEntity j) { return true; }
             @Override

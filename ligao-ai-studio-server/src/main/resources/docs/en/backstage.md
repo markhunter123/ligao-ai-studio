@@ -108,7 +108,7 @@ A run can be both stuck and orphan; the **stuck** signal wins and the orphan bad
 
 ## A typical session
 
-A user pings you on Slack: "my agent's been spinning for 10 minutes."
+A user pings you on IM: "my agent's been spinning for 10 minutes."
 
 1. Open `/backstage`.
 2. Find their card. The orange status ring tells you it's stuck before you read anything else.

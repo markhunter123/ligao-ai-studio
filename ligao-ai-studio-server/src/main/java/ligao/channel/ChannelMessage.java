@@ -68,8 +68,6 @@ public class ChannelMessage {
      * 不同渠道含义不同：
      * - 钉钉：sessionWebhook URL
      * - 飞书：chat_id
-     * - Telegram：chat_id
-     * - Discord：channel_id
      * <p>
      * 用于 sendMessage 回复时确定目标
      */

@@ -1,6 +1,6 @@
 ---
 title: Ligao 项目介绍 — 自部署多智能体 AI 操作系统
-description: Ligao 是基于 Spring AI Alibaba 的开源多智能体 AI 操作系统。ReAct + Plan-and-Execute 双引擎、LLM Wiki 知识库、四层记忆系统、MCP 工具协议、8 渠道统一接入。一个 JAR 包自部署，数据不出门。
+description: Ligao 是基于 Spring AI Alibaba 的开源多智能体 AI 操作系统。ReAct + Plan-and-Execute 双引擎、LLM Wiki 知识库、四层记忆系统、MCP 工具协议、6 渠道统一接入。一个 JAR 包自部署，数据不出门。
 head:
   - - meta
     - name: keywords
@@ -47,7 +47,7 @@ Ligao 换了一个打法：**所有东西放在一个屋檐下，跑在你自己
 
 **它手上有真工具。** 内置工具：搜索、文件读写、shell、时间、图像、音乐、视频、语音识别、语音合成。任何别的东西都能接 MCP 服务。你自己的技能包只要写个 `SKILL.md` 就能装进工作空间。所有工具都过一层 Tool Guard，必要时还能走人工审批——手能伸得远，但边界清清楚楚。
 
-**它会在每一个真实的工作面上出现。** Web 控制台、桌面端（内置 JRE 21，用户不需要装 Java），还有八个聊天渠道：钉钉、飞书、企业微信、微信、Telegram、Discord、QQ、Slack。Slack 里回复的 Agent 和浏览器里的 Agent 是同一个——同一份记忆、同一套技能、同一种性格。
+**它会在每一个真实的工作面上出现。** Web 控制台、桌面端（内置 JRE 21，用户不需要装 Java），还有六个聊天渠道：钉钉、飞书、企业微信、微信、QQ、Web。任一渠道里回复的 Agent 和浏览器里的 Agent 是同一个——同一份记忆、同一套技能、同一种性格。
 
 ---
 

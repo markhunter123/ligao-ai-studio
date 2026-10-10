@@ -8,14 +8,12 @@ import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 import ligao.channel.dingtalk.DingTalkChannelAdapter;
-import ligao.channel.discord.DiscordChannelAdapter;
 import ligao.channel.feishu.FeishuChannelAdapter;
 import ligao.channel.leader.ChannelLeaderElection;
 import ligao.channel.leader.LeaderLease;
 import ligao.channel.model.ChannelEntity;
 import ligao.channel.qq.QQChannelAdapter;
 import ligao.channel.service.ChannelService;
-import ligao.channel.telegram.TelegramChannelAdapter;
 import ligao.channel.web.WebChannelAdapter;
 import ligao.channel.wecom.WeComChannelAdapter;
 import ligao.channel.weixin.WeixinChannelAdapter;
@@ -169,7 +167,7 @@ public class ChannelManager {
 
     /**
      * Reconcile futures for <b>non</b>-leader-required active adapters
-     * (e.g. webhook-mode Feishu, polling-disabled Telegram). Without these,
+     * (e.g. webhook-mode Feishu). Without these,
      * cross-node admin actions on a follower would never reach the running
      * adapter on another node — only leaders run reconciliation through
      * their heartbeat, so a webhook-running node would otherwise be deaf
@@ -226,7 +224,7 @@ public class ChannelManager {
 
     /** 支持的渠道类型 */
     private static final Set<String> SUPPORTED_TYPES = Set.of(
-            "web", "dingtalk", "feishu", "telegram", "discord", "wecom", "qq", "weixin", "slack", "webchat"
+            "web", "dingtalk", "feishu", "wecom", "qq", "weixin", "webchat"
     );
 
     /**
@@ -979,8 +977,8 @@ public class ChannelManager {
     /**
      * RFC-063r §2.10: preferred overload — accepts a {@link DeliveryOptions}
      * Parameter Object so cron delivery (and future callers) can pass
-     * Slack {@code thread_ts}, Telegram {@code message_thread_id}, multi-bot
-     * {@code accountId}, etc. without growing a 5-arg signature.
+     * {@code threadId}, multi-bot {@code accountId}, etc. without growing a
+     * 5-arg signature.
      */
     public void sendToChannel(Long channelId, String targetId, String content, DeliveryOptions options) {
         ChannelAdapter adapter = getAdapter(channelId)
@@ -1194,14 +1192,11 @@ public class ChannelManager {
             case "feishu" -> new FeishuChannelAdapter(channel, messageRouter, objectMapper,
                     feishuMediaUploader, generatedFileScrubber, feishuStreamingCardManager,
                     feishuCardDispatcher, feishuClientFactory, generatedFileCache, sttService);
-            case "telegram" -> new TelegramChannelAdapter(channel, messageRouter, objectMapper);
-            case "discord" -> new DiscordChannelAdapter(channel, messageRouter, objectMapper);
             case "wecom" -> new WeComChannelAdapter(channel, messageRouter, objectMapper,
                     approvalNotificationService, weComCardDispatcher, weComKeepaliveScheduler,
                     generatedFileCache);
             case "qq" -> new QQChannelAdapter(channel, messageRouter, objectMapper);
             case "weixin" -> new WeixinChannelAdapter(channel, messageRouter, objectMapper);
-            case "slack" -> new ligao.channel.slack.SlackChannelAdapter(channel, messageRouter, objectMapper);
             case "webchat" -> new ligao.channel.webchat.WebChatChannelAdapter(channel, messageRouter, objectMapper);
             default -> throw new IllegalArgumentException("Unsupported channel type: " + type);
         };

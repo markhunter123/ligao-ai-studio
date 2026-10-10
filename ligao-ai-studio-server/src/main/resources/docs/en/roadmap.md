@@ -34,7 +34,7 @@ Make an AI assistant a coworker who uses tools, not a chat box.
 
 Move AI out of the chat box on a webpage and into every IM your team actually uses.
 
-- **8 channels**: Web / DingTalk / Feishu / WeCom / Telegram / Discord / QQ / WeChat Personal / Slack
+- **6 channels**: Web / DingTalk / Feishu / WeCom / QQ / WeChat Personal
 - Session source tracking: every message knows which channel it came from
 - 4-layer memory: session context + workspace memory + post-chat extraction + 2 AM consolidation
 - DREAMS.md consolidation diary: human-readable audit of memory changes
@@ -165,7 +165,7 @@ Each one is **a one-click-importable workflow template + trigger config + recomm
 | **Multi-tenancy** | Same as above. Premature multi-tenancy is architectural cancer | When there's a clear SaaS commercialization path |
 | **SSO / LDAP / SAML** | Enterprise integration is a bottomless pit | When paying enterprise customers explicitly ask |
 | **30+ node visual workflow editor** | Most users won't reach for it. **v1.3's 7 step modes already cover 90% of real-world scenarios**; the rest is pushed to LLM natural-language generation | When a user case actually needs 30+ nodes (rare) |
-| **Native mobile app** | 8 IM channels + desktop + Web already cover it. On your phone, you use Ligao via DingTalk / Feishu / Telegram | When Web / IM channels can't deliver an irreplaceable mobile-only feature |
+| **Native mobile app** | 6 IM channels + desktop + Web already cover it. On your phone, you use Ligao via DingTalk / Feishu / WeCom / WeChat / QQ | When Web / IM channels can't deliver an irreplaceable mobile-only feature |
 | **Replacing ReAct / Plan-Execute** | Workflow and those two engines **collaborate**, not replace — single-agent multi-turn reasoning still lives there | Never replaces |
 
 ---
@@ -175,7 +175,7 @@ Each one is **a one-click-importable workflow template + trigger config + recomm
 | Version | One line | User experience goal | Status |
 |---------|----------|----------------------|--------|
 | **v1.0** | It thinks and acts | An AI assistant that uses tools to solve problems | ✅ Released |
-| **v1.1** | It's everywhere | 8 channels + 4-layer memory + workspaces + LLM Wiki | ✅ Released |
+| **v1.1** | It's everywhere | 6 channels + 4-layer memory + workspaces + LLM Wiki | ✅ Released |
 | **v1.2** | It's your coworker | Digital employees + 5 career templates + backbone-style skills + ACP bridge + Backstage runtime | ✅ Released |
 | **v1.3** | It orchestrates business flows | Workflow + triggers + image editing + document generation + per-agent tool binding | ✅ Released |
 | **v1.4** | **It lands real scenarios** | **Industry scenario templates + scenario marketplace + NL → workflow + cross-scenario employee profiling** | 📋 Planned |
@@ -190,7 +190,7 @@ We're building it because we believe one thing:
 
 **AI shouldn't be a chat box on a webpage. It should be your second brain.**
 
-It lives in your DingTalk, your Feishu, your Telegram. It's read every document you have. It remembers what you said three months ago. It uses your company's internal tools. It consolidates memory while you sleep. **It runs an entire business flow on your behalf.**
+It lives in your DingTalk, your Feishu, your WeCom, your WeChat, your QQ. It's read every document you have. It remembers what you said three months ago. It uses your company's internal tools. It consolidates memory while you sleep. **It runs an entire business flow on your behalf.**
 
 Someday, you'll forget it's a program.
 

@@ -2,7 +2,7 @@
 
 **同一个大脑，同一份记忆，跟着你的团队走到哪里就到哪里。**
 
-Ligao 里的一个渠道是通往同一个 Agent 的另一扇门。团队在飞书里沟通？把 Agent 放进飞书。有人喜欢用 Telegram？同一个 Agent，同一份记忆，出现在 Telegram。Web 控制台给运维，钉钉给现场，Slack 给工程——**一次部署，九扇门**。
+Ligao 里的一个渠道是通往同一个 Agent 的另一扇门。团队在飞书里沟通？把 Agent 放进飞书。运维用 Web 控制台，现场用钉钉——**一次部署，六扇门**。
 
 每一个渠道是一个适配器。适配器底下，Agent **不知道（也不在乎）**消息是从哪扇门进来的。
 
@@ -14,7 +14,7 @@ v1.3.0 在渠道层做了一批长跑稳定性 + 群协作的工作：
 - **群聊按 sender id 单独归属 + 时间窗去抖**：群里两个人同时讲话，不再把对话搞混
 - **粘贴长消息自适应去抖窗口**：一段被切成 5 条的长粘贴自动合并成一条
 - **企业微信审批卡片 + keepalive + chunk dedup**：长任务卡片不会被对端会话超时杀掉
-- **异步工具结果回流原渠道**：员工跑长任务，跑完后结果回到发起的渠道（飞书 / 钉钉 / 企微 / Slack），文件按渠道分别上传
+- **异步工具结果回流原渠道**：员工跑长任务，跑完后结果回到发起的渠道（飞书 / 钉钉 / 企微），文件按渠道分别上传
 - **去除编造的生成文件 URL**：员工不再返回"https://example.com/file.docx"这种虚假链接
 
 企业微信的细节调优全部在 [企业微信深度优化](./wecom-tuning) 里。
@@ -42,7 +42,7 @@ v1.4.0 把飞书做成了"一等公民"渠道——交互卡片、流式卡片�
 
 ---
 
-## 九个渠道
+## 六个渠道
 
 | 渠道 | 传输 | 流式 | 说明 |
 |------|------|------|------|
@@ -51,21 +51,18 @@ v1.4.0 把飞书做成了"一等公民"渠道——交互卡片、流式卡片�
 | **飞书** | WebSocket / Webhook | — | WebSocket 不需要公网 IP |
 | **企业微信** | 长连接 / Webhook | — | 长连接优先 |
 | **微信** | HTTP 长轮询（iLink） | — | 实验性 / beta |
-| **Telegram** | Long-Polling / Webhook | 打字指示器 | Long-Polling 不需要公网 IP |
-| **Discord** | Gateway WebSocket（JDA） | 打字指示器 | 自动重连 |
 | **QQ** | WebSocket / 回调 | — | 官方机器人平台 |
-| **Slack** | Events API / Socket mode | — | Socket mode 不需要公网 IP |
 
 ---
 
 ## 一个渠道实际上怎么工作
 
 ```
-┌──────┐ ┌──────┐ ┌──────┐ ┌──────┐ ┌──────┐ ┌───────┐ ┌────┐ ┌──────┐ ┌──────┐
-│ Web  │ │ 钉钉 │ │ 飞书 │ │企业微│ │ TG   │ │Discord│ │ QQ │ │ 微信 │ │Slack │
-└──┬───┘ └──┬───┘ └──┬───┘ └──┬───┘ └──┬───┘ └──┬────┘ └─┬──┘ └──┬───┘ └──┬───┘
-   │        │        │        │        │        │        │        │       │
-   └────────┴────────┴────┬───┴────────┴────────┴────────┴────────┴───────┘
+┌──────┐ ┌──────┐ ┌──────┐ ┌──────┐ ┌────┐ ┌──────┐
+│ Web  │ │ 钉钉 │ │ 飞书 │ │企业微│ │ QQ │ │ 微信 │
+└──┬───┘ └──┬───┘ └──┬───┘ └──┬───┘ └─┬──┘ └──┬───┘
+   │        │        │        │       │        │
+   └────────┴────────┴────┬───┴───────┴────────┘
                           │
                  ┌────────┴─────────┐
                  │   渠道适配层      │  ← 把多种协议归一
@@ -94,7 +91,7 @@ v1.4.0 把飞书做成了"一等公民"渠道——交互卡片、流式卡片�
 | 列 | 是什么 |
 |----|--------|
 | `name` | 显示名 |
-| `type` | 渠道类型（`dingtalk`、`feishu`、`telegram` 等） |
+| `type` | 渠道类型（`dingtalk`、`feishu`、`wecom`、`qq`、`weixin` 等） |
 | `agent_id` | 处理这个渠道消息的 Agent |
 | `config` | JSON 对象，渠道特有的凭证 |
 | `enabled` | 开关 |
@@ -404,91 +401,7 @@ Webhook URL：`https://your-domain/api/v1/channels/webhook/wecom`
 
 ---
 
-## Telegram
 
-Long-Polling（默认）或 Webhook。Long-Polling **不需要公网 IP**。
-
-### 创建机器人
-
-1. 在 Telegram 搜 **@BotFather**（认准蓝色官方认证标）
-2. 发 `/newbot`，跟着提示走
-   ![创建机器人](/images/channels/telegram/01-botfather.jpg)
-3. 复制 **Bot Token**
-   ![拿 Token](/images/channels/telegram/02-token.jpg)
-
-### 配置
-
-```bash
-curl -X POST http://localhost:18088/api/v1/channels \
-  -H "Content-Type: application/json" \
-  -H "Authorization: Bearer <token>" \
-  -d '{
-    "name": "Telegram 机器人",
-    "type": "telegram",
-    "agentId": 1,
-    "config": {
-      "bot_token": "123456:ABC-DEF1234ghIkl-zyx57W2v1u123ew11",
-      "show_typing": true,
-      "polling_timeout": 20
-    },
-    "enabled": true
-  }'
-```
-
-::: tip
-- Long-Polling 内置指数退避重连（2s → 30s）
-- 打字指示器每 4 秒刷新一次
-- 国内用户大概率需要配 `http_proxy`
-:::
-
----
-
-## Discord
-
-基于 **JDA**——通过 Gateway WebSocket 连接，自带自动重连。
-
-### 创建机器人
-
-1. [Discord 开发者门户](https://discord.com/developers/applications)
-   ![开发者门户](/images/channels/discord/01-developer-portal.png)
-
-2. 创建 Application
-   ![创建应用](/images/channels/discord/02-create-app.png)
-
-3. **Bot** → 创建 Bot，复制 **Token**
-   ![Bot Token](/images/channels/discord/03-bot-token.png)
-
-4. 启用 **Message Content Intent**，授予 **Send Messages** + **Attach Files**
-   ![权限](/images/channels/discord/04-permissions.png)
-
-5. **OAuth2 > URL Generator** → 选 `bot` scope → 邀请到你的 server
-   ![OAuth2](/images/channels/discord/05-oauth2.png) ![邀请](/images/channels/discord/06-invite.png)
-
-### 配置
-
-```bash
-curl -X POST http://localhost:18088/api/v1/channels \
-  -H "Content-Type: application/json" \
-  -H "Authorization: Bearer <token>" \
-  -d '{
-    "name": "Discord 机器人",
-    "type": "discord",
-    "agentId": 1,
-    "config": {
-      "bot_token": "your-bot-token",
-      "accept_bot_messages": false
-    },
-    "enabled": true
-  }'
-```
-
-::: tip
-- 不需要 Webhook URL 或 Interactions Endpoint——Gateway WebSocket 包办一切
-- 长回复（超过 2000 字）自动拆分，代码块完整性会被保护
-- 消息去重（LRU cache 500 条）防止重连时重复处理
-:::
-
----
 
 ## QQ
 
@@ -538,41 +451,6 @@ curl -X POST http://localhost:18088/api/v1/channels \
 
 ---
 
-## Slack
-
-Events API（webhook 模式）或 Socket Mode（不需要公网 IP）。
-
-### 创建 app
-
-1. 打开 [Slack API — Your Apps](https://api.slack.com/apps)，创建一个新 app
-2. **OAuth & Permissions** → bot scopes：`chat:write`、`app_mentions:read`、`im:history`、`im:read`、`im:write`、`files:write`
-3. 安装到你的 workspace
-4. 复制 **Bot User OAuth Token**（`xoxb-...`）
-5. Socket Mode：**Socket Mode** 里启用，生成一个带 `connections:write` 的 **App-Level Token**（`xapp-...`）
-6. 订阅 bot 事件：`app_mention`、`message.im`
-
-### 配置
-
-```bash
-curl -X POST http://localhost:18088/api/v1/channels \
-  -H "Content-Type: application/json" \
-  -H "Authorization: Bearer <token>" \
-  -d '{
-    "name": "Slack 机器人",
-    "type": "slack",
-    "agentId": 1,
-    "config": {
-      "bot_token": "xoxb-...",
-      "app_token": "xapp-...",
-      "mode": "socket"
-    },
-    "enabled": true
-  }'
-```
-
-Webhook URL（webhook 模式）：`https://your-domain/api/v1/channels/webhook/slack`
-
----
 
 ## 微信（iLink）
 
@@ -653,10 +531,9 @@ IM 渠道（企业微信、微信、钉钉）都支持语音输入。语音识�
 ## 值得知道的事
 
 - **Webhook 模式需要 HTTPS。** 生产部署应该用 Nginx + SSL 挡在 Ligao 前面。
-- **长连接模式不需要公网 IP。** Telegram Long-Polling、钉钉 Stream、飞书 WebSocket、Discord Gateway、Slack Socket mode、企业微信长连接——全都可以跑在 NAT 后面。
+- **长连接模式不需要公网 IP。** 钉钉 Stream、飞书 WebSocket、企业微信长连接——全都可以跑在 NAT 后面。
 - **一个渠道一个 Agent。** 不同渠道可以指向不同 Agent。
 - **凭证在 `ligao_channel` 里加密存储。**
-- **国内网络**大概率需要配 `http_proxy` 来访问 Telegram 和 Discord。
 
 ---
 

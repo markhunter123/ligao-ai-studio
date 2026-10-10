@@ -160,7 +160,7 @@ public class ConversationController {
     /**
      * Pin a conversation to a specific (provider, model) pair so subsequent
      * messages — including those from IM channels (Feishu / DingTalk / WeCom
-     * / Telegram / Discord / QQ / Slack / WeChat) — use that model instead
+     * / QQ / WeChat) — use that model instead
      * of falling back to the agent or global default. Closes issue #183
      * where IM conversations could never be steered away from the agent's
      * configured default via the admin UI.

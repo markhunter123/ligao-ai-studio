@@ -37,8 +37,8 @@ public abstract class AbstractCronResultDelivery implements CronResultDelivery {
 
     /**
      * Default platform message-length cap used when the bound channel type
-     * is unknown — matches Telegram's 4096 ceiling, the most permissive
-     * among the small-cap platforms in {@link ChannelMessageRenderer#PLATFORM_LIMITS}.
+     * is unknown — uses the 4096 ceiling, the most permissive value
+     * in {@link ChannelMessageRenderer#PLATFORM_LIMITS}.
      * RFC-063r §2.11 will refine this in PR-4 by passing per-channel limits
      * through {@code DeliveryOptions}.
      */

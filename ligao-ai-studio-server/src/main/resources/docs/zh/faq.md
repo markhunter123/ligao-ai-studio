@@ -259,22 +259,11 @@ UI 里用 `工具 → MCP 服务`。三种传输模式：stdio、streamable_http
 3. 验证 token 错了
 4. Bot 没被加到群里或没有消息权限
 
-**更简单：** 用 **stream / 长连接 / WebSocket 模式**而不是 webhook。钉钉 Stream、飞书 WebSocket、Telegram Long-Polling、Discord Gateway、Slack Socket mode——**都不需要公网 IP**。
+**更简单：** 用 **stream / 长连接 / WebSocket 模式**而不是 webhook。钉钉 Stream、飞书 WebSocket——**都不需要公网 IP**。
 
 ### 能同时用多个渠道吗？
 
-可以。每个渠道独立、绑一个 Agent。可以同时跑 web 控制台、钉钉、Telegram，绑不同的 Agent（或同一个——你说了算）。
-
-### Telegram / Discord 访问不到 API（国内网络）
-
-在渠道配置里配 `http_proxy`：
-
-```json
-{
-  "bot_token": "...",
-  "http_proxy": "http://127.0.0.1:7890"
-}
-```
+可以。每个渠道独立、绑一个 Agent。可以同时跑 web 控制台、钉钉、飞书，绑不同的 Agent（或同一个——你说了算）。
 
 ---
 

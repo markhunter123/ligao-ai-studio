@@ -23,12 +23,9 @@
               <option value="web">{{ t('channels.types.web') }}</option>
               <option value="dingtalk">{{ t('channels.types.dingtalk') }}</option>
               <option value="feishu">{{ t('channels.types.feishu') }}</option>
-              <option value="telegram">{{ t('channels.types.telegram') }}</option>
-              <option value="discord">{{ t('channels.types.discord') }}</option>
               <option value="wecom">{{ t('channels.types.wecom') }}</option>
               <option value="weixin">{{ t('channels.types.weixin') }}</option>
               <option value="qq">{{ t('channels.types.qq') }}</option>
-              <option value="slack">{{ t('channels.types.slack') }}</option>
               <option value="webchat">{{ t('channels.types.webchat') }}</option>
               <option value="webhook">{{ t('channels.types.webhook') }}</option>
             </select>
@@ -595,8 +592,6 @@ const currentFieldDefs = computed<ChannelFieldDef[]>(() => {
 
 const WEBHOOK_GUIDES = computed<Record<string, { steps: string[] }>>(() => ({
   dingtalk: { steps: [t('channels.guide.dingtalk.step1'), t('channels.guide.dingtalk.step2'), t('channels.guide.dingtalk.step3')] },
-  telegram: { steps: [t('channels.guide.telegram.step1'), t('channels.guide.telegram.step2'), t('channels.guide.telegram.step3'), t('channels.guide.telegram.step4')] },
-  discord: { steps: [t('channels.guide.discord.step1'), t('channels.guide.discord.step2'), t('channels.guide.discord.step3'), t('channels.guide.discord.step4'), t('channels.guide.discord.step5')] },
   wecom: { steps: [t('channels.guide.wecom.step1'), t('channels.guide.wecom.step2'), t('channels.guide.wecom.step3'), t('channels.guide.wecom.step4')] },
   weixin: { steps: [t('channels.guide.weixin.step1'), t('channels.guide.weixin.step2'), t('channels.guide.weixin.step3'), t('channels.guide.weixin.step4')] },
   qq: { steps: [t('channels.guide.qq.step1'), t('channels.guide.qq.step2'), t('channels.guide.qq.step3'), t('channels.guide.qq.step4')] },
@@ -626,10 +621,8 @@ const webhookGuide = computed(() => {
 const needsWebhookUrl = computed(() => {
   const type = form.value.channelType
   if (type === 'wecom' || type === 'qq' || type === 'weixin') return false
-  if (type === 'discord') return false
   if (type === 'dingtalk' && channelConfig.value.connection_mode !== 'webhook') return false
   if (type === 'feishu' && channelConfig.value.connection_mode === 'websocket') return false
-  if (type === 'telegram' && channelConfig.value.connection_mode !== 'webhook') return false
   return true
 })
 
@@ -765,8 +758,8 @@ function isAutoTypeFallback(text: string): boolean {
   const trimmed = text.trim()
   // Iterate the known channel types we ship i18n for. List mirrors
   // CHANNEL_TYPE_OPTIONS but we keep a local copy to avoid coupling.
-  const known = ['web', 'dingtalk', 'wecom', 'weixin', 'feishu', 'telegram',
-                 'slack', 'discord', 'qq', 'matrix', 'qqbot', 'yuanbao']
+  const known = ['web', 'dingtalk', 'wecom', 'weixin', 'feishu',
+                 'qq', 'matrix', 'qqbot', 'yuanbao']
   for (const k of known) {
     const s = t(`channels.cardDesc.typeFallback.${k}` as any)
     if (s && s === trimmed) return true

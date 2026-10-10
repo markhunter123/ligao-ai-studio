@@ -262,10 +262,7 @@ Different channels use different transports, but the agent underneath is the sam
 | Feishu (Lark) | WebSocket / Webhook | No |
 | WeChat Work (WeCom) | Long connection / Webhook | No |
 | WeChat Personal | HTTP long polling | No |
-| Telegram | Long-Polling / Webhook | Typing indicator |
-| Discord | Gateway WebSocket | Typing indicator |
 | QQ | WebSocket / Callback | No |
-| Slack | Webhook / Socket mode | No |
 
 Go deeper in [Channels](./channels).
 

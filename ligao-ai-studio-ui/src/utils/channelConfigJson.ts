@@ -36,11 +36,6 @@ export function parseConfigJson(json?: string): Record<string, any> {
 
 export function extractChannelFields(cfg: Record<string, any>, channelType: string): Record<string, any> {
   const fields: ChannelFieldDef[] = CHANNEL_FIELD_DEFS[channelType] || []
-  // Backwards compat: legacy Telegram configs without connection_mode but with
-  // webhook_url should be treated as webhook mode.
-  if (channelType === 'telegram' && cfg.webhook_url && !cfg.connection_mode) {
-    cfg = { ...cfg, connection_mode: 'webhook' }
-  }
   const result: Record<string, any> = {}
   for (const f of fields) {
     if (cfg[f.key] !== undefined) result[f.key] = cfg[f.key]

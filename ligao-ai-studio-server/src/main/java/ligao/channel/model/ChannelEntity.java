@@ -21,7 +21,7 @@ public class ChannelEntity {
     /** 渠道名称 */
     private String name;
 
-    /** 渠道类型：web / dingtalk / feishu / wechat / discord / qq */
+    /** 渠道类型：web / dingtalk / feishu / wechat / qq */
     private String channelType;
 
     /** 关联的 Agent ID */

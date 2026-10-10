@@ -114,7 +114,7 @@ An agent doesn't work alone. One agent can delegate to another — or to **three
 - **Live child visibility** — see reasoning, tool calls, and progress for each child in the ChatConsole as it happens
 - **Routing hints** — built into the system prompt, so agents know when to handle it themselves vs. when to delegate
 
-Example: coding agent takes the Jira ticket, research agent pulls competitor data, writing agent drafts the Slack reply. Three in parallel, results flow back to the orchestrator.
+Example: coding agent takes the Jira ticket, research agent pulls competitor data, writing agent drafts the chat reply. Three in parallel, results flow back to the orchestrator.
 
 ### Multi-level subagent delegation tree
 

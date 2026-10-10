@@ -131,7 +131,7 @@ class ChannelManagerReconcileTest {
         seedLeaderState(50L, adapter, lease, LocalDateTime.of(2026, 1, 1, 0, 0));
 
         // Stub createAdapter so that the swap doesn't need a real
-        // network-backed Feishu/Telegram start(). The fresh adapter
+        // network-backed Feishu start(). The fresh adapter
         // reports requiresSingleLeader=false, simulating a mode flip.
         TrackingAdapter newAdapter = new TrackingAdapter() {
             @Override public boolean requiresSingleLeader() { return false; }
@@ -216,7 +216,7 @@ class ChannelManagerReconcileTest {
     @DisplayName("non-leader reconcile: disabled channel on another node triggers local stop")
     void nonLeaderReconcileStopsOnDisabled() {
         // Seed a non-leader active adapter (no lease, no heartbeat) — this is
-        // the state a Feishu-webhook or Telegram-webhook node lives in.
+        // the state a Feishu-webhook node lives in.
         TrackingAdapter webhookAdapter = new TrackingAdapter() {
             @Override public boolean requiresSingleLeader() { return false; }
         };

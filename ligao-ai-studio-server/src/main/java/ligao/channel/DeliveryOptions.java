@@ -6,8 +6,8 @@ import java.util.Map;
 
 /**
  * RFC-063r §2.10: Parameter Object that bundles optional delivery hints
- * (Slack {@code thread_ts}, Telegram {@code message_thread_id}, multi-bot
- * {@code accountId}, etc.) so {@link ChannelManager#sendToChannel} doesn't
+ * ({@code threadId}, multi-bot {@code accountId}, etc.) so
+ * {@link ChannelManager#sendToChannel} doesn't
  * grow a 5-arg overload.
  *
  * <p>{@link #DEFAULTS} is the canonical "no hints" instance — adapters that

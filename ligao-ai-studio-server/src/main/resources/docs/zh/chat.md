@@ -262,10 +262,7 @@ Segment 的结构是渐进展示的底层。它也让**数据库成为单一事�
 | 飞书 | WebSocket / Webhook | ❌ |
 | 企业微信 | 长连接 / Webhook | ❌ |
 | 微信 | HTTP 长轮询 | ❌ |
-| Telegram | Long-Polling / Webhook | 打字指示器 |
-| Discord | Gateway WebSocket | 打字指示器 |
 | QQ | WebSocket / 回调 | ❌ |
-| Slack | Webhook / Socket mode | ❌ |
 
 进 [多渠道接入](./channels) 看细节。
 

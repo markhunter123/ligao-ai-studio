@@ -108,7 +108,7 @@ run 上的 `stuckReason` 非空。runtime 的 watchdog 在某个步骤超过超�
 
 ## 一次典型操作
 
-用户在 Slack 上 ping 你："我的 Agent 已经转 10 分钟了。"
+用户在 IM 里 ping 你："我的 Agent 已经转 10 分钟了。"
 
 1. 打开 `/backstage`。
 2. 找到那张卡。橙色状态环在你看任何文字之前就告诉你它卡死了。

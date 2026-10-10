@@ -209,7 +209,6 @@ Fix: `AsyncTaskMediaDispatcher.forwardToImIfBound(conversationId, parts)`:
 - Skip `web` / `webchat` (SSE already covers them)
 - Call the channel adapter's `sendContentParts(targetId, parts)`
 - WeCom: image / audio / video / file all supported as native attachments
-- Slack: via `filesUploadV2` (see [Slack channel](./channels#slack))
 - Channels without `sendContentParts` (QQ, etc.): catch UnsupportedOperationException + log; one unsupported channel doesn't block the rest
 
 Files live at `data/chat-uploads/{conversationId}/`, served at `/api/v1/chat/files/{conversationId}/{storedName}`. Frontend and channel attachment views all read by this URL.
@@ -412,7 +411,7 @@ Expect periodic "Heartbeat sent" + "Heartbeat ACK received", with occasional "fo
 
 ## Related reading
 
-- [Channels](./channels) — overview of all 9 channels + setup
+- [Channels](./channels) — overview of all 6 channels + setup
 - [Agent engine](./agents) — TLS retry, error classification, self-loop detection
 - [Models](./models) — switching default model, failover chain
 - [Security & approval](./security) — approval flow for high-risk tools in groups

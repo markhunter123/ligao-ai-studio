@@ -11,8 +11,8 @@ import java.util.Set;
  * RFC-03 Lane K3 — centralized validation for media files passing through
  * channel adapters (incoming attachments + outgoing replies).
  *
- * <p>Each {@code *ChannelAdapter} (DingTalk / Feishu / Discord / Telegram /
- * QQ / WeCom / Weixin / Slack) historically inlined its own ad-hoc set of
+ * <p>Each {@code *ChannelAdapter} (DingTalk / Feishu / QQ / WeCom / Weixin)
+ * historically inlined its own ad-hoc set of
  * checks — extension allowlist here, size cap there, no path-traversal
  * guard at all. The result is 8 places to keep in sync when a new file
  * type is supported (or when a new exploit needs a defensive patch).
