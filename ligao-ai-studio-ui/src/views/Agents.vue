@@ -296,7 +296,7 @@
             </div>
             <div class="form-group">
               <label class="form-label">{{ t('agents.fields.maxIterations') }}</label>
-              <input v-model.number="form.maxIterations" type="number" min="1" max="50" class="form-input" />
+              <input v-model.number="form.maxIterations" type="number" min="1" max="20" class="form-input" />
             </div>
             <!-- RFC-03 Lane G1: per-Agent model override. Empty value falls
                  back to the global default in ModelConfigService.resolveModel. -->
@@ -947,7 +947,7 @@ const defaultForm = (): Partial<Agent> & { name: string; defaultThinkingLevel: s
   agentType: 'react',
   systemPrompt: '',
   modelName: '', // RFC-03 G1 — empty means "use global default"
-  maxIterations: 10,
+  maxIterations: 20,
   // Empty so SkillIcon's fallback (🤖) shows instead of pinning a literal
   // emoji into form.icon — otherwise the picker thinks the user picked
   // the robot emoji explicitly and reopens on the Emoji tab.

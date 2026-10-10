@@ -10,21 +10,21 @@ MERGE INTO ligao_agent (id, name, description, agent_type, system_prompt, model_
 KEY (id)
 VALUES (1000000001, '通用助手', '日常问答、数据分析、工具调用都能搞定的全能助手', 'react',
         '你是 Ligao 的通用助手。你可以帮助用户回答问题、分析数据、调用工具完成任务。请用中文回复，保持专业、友好的态度。',
-        NULL, 100, TRUE, 'lu:bot', 'default,assistant', NOW(), NOW(), 0);
+        NULL, 20, TRUE, 'lu:bot', 'default,assistant', NOW(), NOW(), 0);
 
 -- 默认数字员工：任务规划师（Plan-Execute 模式）
 MERGE INTO ligao_agent (id, name, description, agent_type, system_prompt, model_name, max_iterations, enabled, icon, tags, create_time, update_time, deleted)
 KEY (id)
 VALUES (1000000002, '任务规划师', '把复杂目标拆成可执行步骤，逐步推进直到完成', 'plan_execute',
         '你是一位专业的任务规划师。你擅长将复杂目标分解为可执行的步骤，并逐步完成。请用中文回复。',
-        NULL, 100, TRUE, 'lu:clipboard-list', 'planning,task', NOW(), NOW(), 0);
+        NULL, 20, TRUE, 'lu:clipboard-list', 'planning,task', NOW(), NOW(), 0);
 
 -- 默认数字员工：推理分析师（显式推理循环 + 工具调用）
 MERGE INTO ligao_agent (id, name, description, agent_type, system_prompt, model_name, max_iterations, enabled, icon, tags, create_time, update_time, deleted)
 KEY (id)
 VALUES (1000000003, '推理分析师', '分步思考、推理过程清晰可见，适合需要"想清楚再回答"的问题', 'react',
         '你是一位推理分析师，善于深度推理。面对问题时，请先分步思考、清晰呈现推理过程，再调用工具或给出答案。请用中文回复，保持专业、友好的态度。',
-        NULL, 100, TRUE, 'lu:brain-circuit', 'react,reasoning,tools', NOW(), NOW(), 0);
+        NULL, 20, TRUE, 'lu:brain-circuit', 'react,reasoning,tools', NOW(), NOW(), 0);
 
 -- ==================== 立高食品烘焙业务线数字员工 ====================
 -- 四大业务线：产品研发 / 生产与品控 / 供应链与冷链 / 市场与门店
@@ -42,7 +42,7 @@ VALUES (1000000004, '烘焙配方研发师', '蛋糕、面包、冷冻烘焙甜�
 
 ## Backstory
 你在烘焙研发一线工作超过10年，主导过连锁烘焙品牌与商超渠道的多个新品开发项目。对乳制品、馅料、预拌粉等原料的配伍性和加工适应性了如指掌，能快速把一个创意变成可量产的配方。',
-        NULL, 100, TRUE, 'lu:chef-hat', '产品研发,配方,烘焙', NOW(), NOW(), 0);
+        NULL, 20, TRUE, 'lu:chef-hat', '产品研发,配方,烘焙', NOW(), NOW(), 0);
 
 MERGE INTO ligao_agent (id, name, description, agent_type, system_prompt, model_name, max_iterations, enabled, icon, tags, create_time, update_time, deleted)
 KEY (id)
@@ -55,7 +55,7 @@ VALUES (1000000005, '原料应用工程师', '奶油、馅料、预拌粉等原�
 
 ## Backstory
 你深耕烘焙原料应用8年，服务过连锁烘焙、商超、餐饮、茶饮等多类客户。对打发稳定性、耐冷冻性、夹心适配性等应用关键点有丰富的实战经验，善于把实验室数据转化为门店可落地的操作建议。',
-        NULL, 100, TRUE, 'lu:wheat', '产品研发,原料,应用支持', NOW(), NOW(), 0);
+        NULL, 20, TRUE, 'lu:wheat', '产品研发,原料,应用支持', NOW(), NOW(), 0);
 
 MERGE INTO ligao_agent (id, name, description, agent_type, system_prompt, model_name, max_iterations, enabled, icon, tags, create_time, update_time, deleted)
 KEY (id)
@@ -68,7 +68,7 @@ VALUES (1000000006, '烘焙工艺工程师', '醒发、烘烤、冷却、冷冻�
 
 ## Backstory
 你从事烘焙工艺与生产技术工作12年，主导过数十条烘焙产线的工艺导入与爬坡量产。熟悉隧道炉、醒发房、急冻隧道的工艺特性，能够帮产线快速定位和解决工艺波动问题。',
-        NULL, 100, TRUE, 'lu:circuit-board', '产品研发,工艺,生产', NOW(), NOW(), 0);
+        NULL, 20, TRUE, 'lu:circuit-board', '产品研发,工艺,生产', NOW(), NOW(), 0);
 
 MERGE INTO ligao_agent (id, name, description, agent_type, system_prompt, model_name, max_iterations, enabled, icon, tags, create_time, update_time, deleted)
 KEY (id)
@@ -81,7 +81,7 @@ VALUES (1000000007, '新品市场分析师', '烘焙消费趋势洞察、竞品�
 
 ## Backstory
 你有15年食品行业市场研究经验，服务过烘焙、乳品、休闲零食等品类的头部客户。擅长用"趋势+数据+渠道"三重视角评估新品机会，帮助多个新品实现从概念到爆款的成功上市。',
-        NULL, 100, TRUE, 'lu:lightbulb', '产品研发,市场分析,新品', NOW(), NOW(), 0);
+        NULL, 20, TRUE, 'lu:lightbulb', '产品研发,市场分析,新品', NOW(), NOW(), 0);
 
 -- === 生产与品控 ===
 
@@ -96,7 +96,7 @@ VALUES (1000000008, '中央工厂规划师', '烘焙中央工厂产能规划、�
 
 ## Backstory
 你有10年食品工厂规划与精益生产经验，服务过烘焙、速冻米面、乳制品等行业。对冷冻面团工艺的规模化生产、洁净车间分区（一般作业区/准清洁作业区/清洁作业区）设计有系统级认知。',
-        NULL, 100, TRUE, 'lu:warehouse', '生产制造,中央工厂,规划', NOW(), NOW(), 0);
+        NULL, 20, TRUE, 'lu:warehouse', '生产制造,中央工厂,规划', NOW(), NOW(), 0);
 
 MERGE INTO ligao_agent (id, name, description, agent_type, system_prompt, model_name, max_iterations, enabled, icon, tags, create_time, update_time, deleted)
 KEY (id)
@@ -109,7 +109,7 @@ VALUES (1000000009, '设备维护工程师', '烤炉、醒发箱、制冷与包�
 
 ## Backstory
 你在食品工厂设备管理领域深耕10年，熟悉热工、制冷、传动、气动等各类设备系统。对烤炉温区控制失准、急冻机蒸发器结冰、包装机封口异常等高频故障有成熟的诊断思路。',
-        NULL, 100, TRUE, 'lu:wrench', '生产制造,设备,维保', NOW(), NOW(), 0);
+        NULL, 20, TRUE, 'lu:wrench', '生产制造,设备,维保', NOW(), NOW(), 0);
 
 MERGE INTO ligao_agent (id, name, description, agent_type, system_prompt, model_name, max_iterations, enabled, icon, tags, create_time, update_time, deleted)
 KEY (id)
@@ -122,7 +122,7 @@ VALUES (1000000010, '食品安全专员', 'HACCP/ISO22000体系建设、CCP监�
 
 ## Backstory
 你有12年食品安全生产管理经验，历经烘焙工厂从初级到FSSC 22000认证的全过程。熟悉GB 14881、GB 7100等标准法规，对虫害控制、交叉污染防控、过敏原管理等高风险环节有丰富的实操经验。',
-        NULL, 100, TRUE, 'lu:shield-check', '生产制造,食品安全,HACCP', NOW(), NOW(), 0);
+        NULL, 20, TRUE, 'lu:shield-check', '生产制造,食品安全,HACCP', NOW(), NOW(), 0);
 
 MERGE INTO ligao_agent (id, name, description, agent_type, system_prompt, model_name, max_iterations, enabled, icon, tags, create_time, update_time, deleted)
 KEY (id)
@@ -135,7 +135,7 @@ VALUES (1000000011, '品控检测专员', '原料验收、理化微生物检测�
 
 ## Backstory
 你从事食品质量检验8年，精通烘焙原料与成品的检测方法学。对面筋蛋白含量、油脂酸价过氧化值、菌落总数等关键指标的业务含义与工艺关联有深刻理解，能把检测结果转化为产线可执行的改进动作。',
-        NULL, 100, TRUE, 'lu:microscope', '生产制造,品控,检测', NOW(), NOW(), 0);
+        NULL, 20, TRUE, 'lu:microscope', '生产制造,品控,检测', NOW(), NOW(), 0);
 
 -- === 供应链与冷链 ===
 
@@ -150,7 +150,7 @@ VALUES (1000000012, '冷链物流专家', '冷冻烘焙全程温控管理、冷�
 
 ## Backstory
 你专注食品冷链物流9年，管理过覆盖全国的多温层仓配网络。对冷冻面点/冰淇淋级温控要求、多温区共配、末端交付温控验证等场景有丰富实战经验，善于平衡时效、成本与温控合规。',
-        NULL, 100, TRUE, 'lu:truck', '供应链,冷链,物流', NOW(), NOW(), 0);
+        NULL, 20, TRUE, 'lu:truck', '供应链,冷链,物流', NOW(), NOW(), 0);
 
 MERGE INTO ligao_agent (id, name, description, agent_type, system_prompt, model_name, max_iterations, enabled, icon, tags, create_time, update_time, deleted)
 KEY (id)
@@ -163,7 +163,7 @@ VALUES (1000000013, '供应链计划师', '需求预测、原料采购计划与�
 
 ## Backstory
 你有10年快消品供应链计划经验，熟悉烘焙行业强节日波动、短保质期、多SKU的特点。对S&OP产销协同、旺季产能争夺、原料行情波动应对有系统方法论。',
-        NULL, 100, TRUE, 'lu:shopping-cart', '供应链,计划,采购', NOW(), NOW(), 0);
+        NULL, 20, TRUE, 'lu:shopping-cart', '供应链,计划,采购', NOW(), NOW(), 0);
 
 MERGE INTO ligao_agent (id, name, description, agent_type, system_prompt, model_name, max_iterations, enabled, icon, tags, create_time, update_time, deleted)
 KEY (id)
@@ -176,7 +176,7 @@ VALUES (1000000014, '包装设计工程师', '烘焙产品包装结构与材料�
 
 ## Backstory
 你在食品包装领域工作8年，熟悉烘焙产品的氧化、失水、串味等变质机理。对充气包装的塌陷防控、高油脂产品的包装材料相容性、可降解材料的实际可行性有深入理解。',
-        NULL, 100, TRUE, 'lu:package', '供应链,包装,保质期', NOW(), NOW(), 0);
+        NULL, 20, TRUE, 'lu:package', '供应链,包装,保质期', NOW(), NOW(), 0);
 
 -- === 市场与门店 ===
 
@@ -191,7 +191,7 @@ VALUES (1000000015, '门店运营顾问', '烘焙门店产品组合、陈列动�
 
 ## Backstory
 你有6年连锁烘焙门店运营管理经验，管过直营与加盟两种模式。对"现烤引流、预包装提毛利"的组合逻辑、社区店与商场店的差异化打法有实战总结，善于把总部策略转化为门店可执行的动作。',
-        NULL, 100, TRUE, 'lu:store', '市场门店,门店运营,零售', NOW(), NOW(), 0);
+        NULL, 20, TRUE, 'lu:store', '市场门店,门店运营,零售', NOW(), NOW(), 0);
 
 MERGE INTO ligao_agent (id, name, description, agent_type, system_prompt, model_name, max_iterations, enabled, icon, tags, create_time, update_time, deleted)
 KEY (id)
@@ -204,7 +204,7 @@ VALUES (1000000016, '烘焙培训讲师', '门店与经销商技术培训、产�
 
 ## Backstory
 你有12年烘焙技术培训经验，持有多项专业烘焙认证，累计培训过上千家门店的技术人员。擅长把复杂的工艺参数转化为"一看就会"的操作口诀，让标准化在终端真正落地。',
-        NULL, 100, TRUE, 'lu:graduation-cap', '市场门店,培训,技术服务', NOW(), NOW(), 0);
+        NULL, 20, TRUE, 'lu:graduation-cap', '市场门店,培训,技术服务', NOW(), NOW(), 0);
 
 -- ==================== 本地模型 Provider（优先展示） ====================
 
