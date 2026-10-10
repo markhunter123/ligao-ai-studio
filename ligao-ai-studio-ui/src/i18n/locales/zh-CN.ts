@@ -1759,6 +1759,7 @@ export default {
     },
   },
   sessions: {
+    kicker: '会话记录',
     title: '会话管理',
     desc: '查看和管理所有会话',
     back: '返回',

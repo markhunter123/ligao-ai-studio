@@ -1,13 +1,14 @@
 <template>
-  <div class="page-container">
-    <div class="page-shell">
-      <div class="page-header">
-        <div class="page-lead">
-          <div class="page-kicker">{{ t('tokenUsage.kicker') }}</div>
-          <h1 class="page-title">{{ t('tokenUsage.title') }}</h1>
-          <p class="page-desc">{{ t('tokenUsage.desc') }}</p>
-        </div>
-        <div class="header-actions">
+  <div class="mc-page-shell">
+    <div class="mc-page-frame">
+      <div class="mc-page-inner tokenusage-page">
+        <div class="mc-page-header">
+          <div>
+            <div class="mc-page-kicker">{{ t('tokenUsage.kicker') }}</div>
+            <h1 class="mc-page-title">{{ t('tokenUsage.title') }}</h1>
+            <p class="mc-page-desc">{{ t('tokenUsage.desc') }}</p>
+          </div>
+          <div class="header-actions">
           <div class="date-range">
             <el-date-picker
               v-model="dateRange"
@@ -29,9 +30,10 @@
             {{ t('tokenUsage.refresh') }}
           </button>
         </div>
-      </div>
+          </div>
+        </div>
 
-      <div class="page-body">
+        <div class="page-body">
         <div v-if="loading && !data" class="loading-state">
           <div class="spinner"></div>
           <p>{{ t('common.loading') }}</p>
@@ -114,6 +116,7 @@
             </div>
           </div>
         </template>
+        </div>
       </div>
     </div>
   </div>
@@ -169,73 +172,19 @@ onMounted(fetchData)
 </script>
 
 <style scoped>
-.page-container {
-  height: 100%;
-  overflow-y: auto;
-  padding: 0;
-  background: transparent;
-}
-
-.page-shell {
-  min-height: 100%;
+/* The fixed mc-page-frame card is the canvas and scrolls internally;
+   header shape comes from the global .mc-page-header / kicker styles. */
+.mc-page-inner.tokenusage-page {
   display: flex;
   flex-direction: column;
   gap: 20px;
-  padding: 0;
-  background: transparent;
-}
-
-.page-header {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  gap: 16px;
-  padding: 24px 24px 0;
-}
-
-.page-lead {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
-.page-kicker {
-  display: inline-flex;
-  align-items: center;
-  width: fit-content;
-  padding: 6px 12px;
-  border: 1px solid color-mix(in srgb, var(--mc-primary) 18%, transparent);
-  border-radius: 999px;
-  background: color-mix(in srgb, var(--mc-primary-bg) 72%, var(--mc-bg-elevated) 28%);
-  color: var(--mc-primary-hover);
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-}
-
-.page-title {
-  font-size: clamp(28px, 4vw, 40px);
-  line-height: 0.95;
-  font-weight: 800;
-  color: var(--mc-text-primary);
-  margin: 0;
-}
-
-.page-desc {
-  max-width: 620px;
-  font-size: 15px;
-  line-height: 1.55;
-  color: var(--mc-text-secondary);
-  margin: 0;
 }
 
 .page-body {
   display: flex;
   flex-direction: column;
   gap: 18px;
-  padding: 0 24px 24px;
+  padding: 0;
 }
 
 .header-actions {

@@ -60,7 +60,6 @@
   --mc-shadow-soft: 0 10px 30px rgba(18, 102, 170, 0.06);
   --mc-shadow-medium: 0 18px 48px rgba(18, 102, 170, 0.10);
   --mc-shadow-strong: 0 24px 70px rgba(18, 102, 170, 0.14);
-  --mc-glow: radial-gradient(circle at top, rgba(18, 102, 170, 0.12), transparent 55%);
 
   /* sidebar */
   --mc-sidebar-bg: #ffffff;
@@ -187,7 +186,6 @@ html.dark {
   --mc-shadow-soft: 0 8px 24px rgba(0, 0, 0, 0.30);
   --mc-shadow-medium: 0 14px 40px rgba(0, 0, 0, 0.36);
   --mc-shadow-strong: 0 20px 60px rgba(0, 0, 0, 0.42);
-  --mc-glow: radial-gradient(circle at top, rgba(26, 140, 220, 0.10), transparent 55%);
 
   /* sidebar */
   --mc-sidebar-bg: #1B1B1C;
@@ -354,15 +352,10 @@ body {
   -moz-osx-font-smoothing: grayscale;
   font-feature-settings: "kern" on;
   transition: background-color 0.2s ease, color 0.2s ease;
-  background-image:
-    radial-gradient(circle at top left, rgba(18, 102, 170, 0.1), transparent 26%),
-    radial-gradient(circle at bottom right, rgba(24, 74, 69, 0.08), transparent 24%);
 }
 
 html.dark body {
-  background-image:
-    radial-gradient(circle at top left, rgba(26, 140, 220, 0.12), transparent 28%),
-    radial-gradient(circle at bottom right, rgba(26, 140, 220, 0.05), transparent 26%);
+  background-image: none;
 }
 
 body::before {
@@ -758,14 +751,24 @@ html.dark body::before {
 /* ================================================================
    Shared page shell
    ================================================================ */
+/* Page shell fills the main-content band exactly (same 14px inset as the
+ * sidebar card) so the left menu and the right card always share top/bottom
+ * edges. Scrolling lives INSIDE the frame card; shells rendered without a
+ * frame keep the classic padded auto-scroll behavior. */
 .mc-page-shell {
   height: 100%;
-  overflow-y: auto;
+  overflow: hidden;
+  padding: 0;
+}
+.mc-page-shell:not(:has(> .mc-page-frame)) {
   padding: 28px;
+  overflow-y: auto;
 }
 
 .mc-page-frame {
   position: relative;
+  height: 100%;
+  overflow-y: auto;
   border: 1px solid var(--mc-border);
   background: var(--mc-surface-overlay);
   backdrop-filter: blur(12px) saturate(1.1);
@@ -781,19 +784,6 @@ html.dark body::before {
    the blur has no visible cost during this transient state. */
 body.workflow-canvas-fullscreen .mc-page-frame {
   backdrop-filter: none;
-}
-body.workflow-canvas-fullscreen .mc-page-frame::before {
-  display: none;
-}
-
-.mc-page-frame::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  background: var(--mc-glow);
-  opacity: 0.8;
-  pointer-events: none;
 }
 
 .mc-page-inner {

@@ -1867,6 +1867,7 @@ export default {
     },
   },
   sessions: {
+    kicker: 'Sessions',
     title: 'Sessions',
     desc: 'View and manage all conversation sessions',
     back: 'Back',

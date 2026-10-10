@@ -1,26 +1,29 @@
 <template>
-  <div class="page-container">
-    <div class="page-header">
-      <div class="page-header-title">
-        <button class="back-btn" :title="t('sessions.back')" @click="goBack">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <polyline points="15 18 9 12 15 6"/>
-          </svg>
-        </button>
-        <div class="title-block">
-          <h1 class="page-title">{{ t('sessions.title') }}</h1>
-          <p class="page-desc">{{ t('sessions.desc') }}</p>
+  <div class="mc-page-shell">
+    <div class="mc-page-frame">
+      <div class="mc-page-inner">
+        <div class="mc-page-header">
+          <div class="header-left">
+            <button class="back-btn" :title="t('sessions.back')" @click="goBack">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="15 18 9 12 15 6"/>
+              </svg>
+            </button>
+            <div>
+              <div class="mc-page-kicker">{{ t('sessions.kicker') }}</div>
+              <h1 class="mc-page-title">{{ t('sessions.title') }}</h1>
+              <p class="mc-page-desc">{{ t('sessions.desc') }}</p>
+            </div>
+          </div>
+          <div class="header-actions">
+            <div class="search-box">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+              </svg>
+              <input v-model="searchText" :placeholder="t('sessions.search')" class="search-input" />
+            </div>
+          </div>
         </div>
-      </div>
-      <div class="header-actions">
-        <div class="search-box">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
-          </svg>
-          <input v-model="searchText" :placeholder="t('sessions.search')" class="search-input" />
-        </div>
-      </div>
-    </div>
 
     <!-- 会话列表 -->
     <div class="sessions-table-wrap">
@@ -139,6 +142,8 @@
         :sizes="[10, 20, 50, 100]"
         @change="onPagerChange"
       />
+    </div>
+      </div>
     </div>
   </div>
 </template>
@@ -324,37 +329,12 @@ function formatTime(time?: string) {
 
 <style scoped>
 /* ==========================================================================
-   Sessions admin — three-depth design system
-   --------------------------------------------------------------------------
-   Layer 1 (canvas):  page-container — atmospheric gradient anchored on the
-                      page edges so the eye has somewhere to breathe.
-   Layer 2 (surface): sessions-table-wrap — the floating "data island",
-                      lifted with multi-step soft shadow.
-   Layer 3 (accent):  primary-tinted CTAs, the title rail, focus glows.
-   All colors flow through theme tokens (--mc-bg / --mc-primary-bg /
-   --mc-shadow-soft …) so light/dark switch is automatic.
+   Sessions admin — the fixed mc-page-frame card is the canvas; the frame
+   itself scrolls. sessions-table-wrap stays the floating "data island".
    ========================================================================== */
 
-.page-container {
-  position: relative;
-  height: 100%;
-  overflow-y: auto;
-  padding: 32px 32px 40px;
-  background:
-    radial-gradient(ellipse 90% 60% at 0% 0%, var(--mc-primary-bg), transparent 55%),
-    radial-gradient(ellipse 70% 50% at 100% 100%, var(--mc-accent-soft), transparent 60%),
-    var(--mc-bg);
-}
-
 /* ============================== Header ============================== */
-.page-header {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 24px;
-  margin-bottom: 24px;
-}
-.page-header-title { display: flex; align-items: flex-start; gap: 14px; }
+.header-left { display: flex; align-items: center; gap: 14px; }
 
 .back-btn {
   width: 36px;
@@ -379,31 +359,6 @@ function formatTime(time?: string) {
   color: var(--mc-primary);
   transform: translateX(-2px);
 }
-
-/* Vertical accent rail anchors the title block to the page — gives the
-   eye a physical "start here" point instead of letting it float. */
-.title-block {
-  position: relative;
-  padding-left: 14px;
-}
-.title-block::before {
-  content: '';
-  position: absolute;
-  left: 0;
-  top: 4px;
-  bottom: 6px;
-  width: 3px;
-  border-radius: 2px;
-  background: linear-gradient(180deg, var(--mc-primary), var(--mc-accent));
-}
-.page-title {
-  font-size: 22px;
-  font-weight: 700;
-  color: var(--mc-text-primary);
-  margin: 0 0 4px;
-  letter-spacing: -0.01em;
-}
-.page-desc { font-size: 13px; color: var(--mc-text-secondary); margin: 0; }
 
 /* ============================== Search ============================== */
 .header-actions { display: flex; gap: 10px; align-items: center; }

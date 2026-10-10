@@ -1,12 +1,16 @@
 <template>
-  <div class="enterprise-shell">
-    <header class="enterprise-head">
-      <div class="enterprise-eyebrow">{{ t('enterprise.eyebrow') }}</div>
-      <h1 class="enterprise-title">{{ t('enterprise.title') }}</h1>
-      <p class="enterprise-subtitle">{{ t('enterprise.subtitle') }}</p>
-    </header>
+  <div class="mc-page-shell">
+    <div class="mc-page-frame enterprise-frame">
+      <div class="mc-page-inner enterprise-shell">
+        <header class="mc-page-header">
+          <div>
+            <div class="mc-page-kicker">{{ t('enterprise.eyebrow') }}</div>
+            <h1 class="mc-page-title">{{ t('enterprise.title') }}</h1>
+            <p class="mc-page-desc">{{ t('enterprise.subtitle') }}</p>
+          </div>
+        </header>
 
-    <nav class="enterprise-tabs">
+        <nav class="enterprise-tabs">
       <button
         v-for="tab in tabs" :key="tab.key"
         class="enterprise-tab" :class="{ active: activeTab === tab.key }"
@@ -22,6 +26,8 @@
       <Approvals v-else-if="activeTab === 'approvals'" />
       <Audit v-else-if="activeTab === 'audit'" />
     </section>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -44,42 +50,24 @@ const tabs = computed<{ key: TabKey; label: string; count: number | null }[]>(()
 </script>
 
 <style scoped>
+/* The frame card stays fixed; each tab manages its own internal scroll,
+   so suppress the global frame-level scrollbar here. */
+.enterprise-frame {
+  display: flex;
+  overflow: hidden;
+}
+
 .enterprise-shell {
   display: flex;
   flex-direction: column;
   flex: 1;
   min-height: 0;
-  padding: 28px 32px 24px;
   gap: 18px;
-  background: var(--mc-bg);
   /* Constrain the inner body so each tab can decide how to overflow:
      vertical-stack pages scroll the body itself, three-pane grid pages
      keep each pane scrolling independently. Without this, content that
      exceeds the viewport falls outside the layout box and is unreachable. */
   overflow: hidden;
-}
-
-.enterprise-head { display: flex; flex-direction: column; gap: 4px; }
-.enterprise-eyebrow {
-  font-size: var(--mc-text-xs);
-  color: var(--mc-primary);
-  text-transform: uppercase;
-  letter-spacing: 0.12em;
-  font-weight: 600;
-}
-.enterprise-title {
-  margin: 0;
-  font-size: 26px;
-  line-height: 1.2;
-  font-weight: 700;
-  color: var(--mc-text-primary);
-}
-.enterprise-subtitle {
-  margin: 0;
-  font-size: 14px;
-  color: var(--mc-text-secondary);
-  max-width: 720px;
-  line-height: 1.55;
 }
 
 .enterprise-tabs {

@@ -1,18 +1,19 @@
 <template>
-  <div class="page-container">
-    <div class="page-shell">
-      <div class="page-header">
-        <div class="page-lead">
-          <div class="page-kicker">{{ t('acp.kicker') }}</div>
-          <h1 class="page-title">{{ t('acp.title') }}</h1>
-          <p class="page-desc">{{ t('acp.desc') }}</p>
+  <div class="mc-page-shell">
+    <div class="mc-page-frame">
+      <div class="mc-page-inner acp-page">
+        <div class="mc-page-header">
+          <div>
+            <div class="mc-page-kicker">{{ t('acp.kicker') }}</div>
+            <h1 class="mc-page-title">{{ t('acp.title') }}</h1>
+            <p class="mc-page-desc">{{ t('acp.desc') }}</p>
+          </div>
+          <div class="header-actions">
+            <button class="btn-primary" @click="openCreateModal">
+              + {{ t('acp.addEndpoint') }}
+            </button>
+          </div>
         </div>
-        <div class="header-actions">
-          <button class="btn-primary" @click="openCreateModal">
-            + {{ t('acp.addEndpoint') }}
-          </button>
-        </div>
-      </div>
 
       <!-- Table -->
       <div class="table-wrap">
@@ -219,6 +220,8 @@
           <button class="btn-secondary" @click="closeModal">{{ t('common.cancel') }}</button>
           <button class="btn-primary" :disabled="!canSave" @click="saveEndpoint">{{ t('common.save') }}</button>
         </div>
+      </div>
+    </div>
       </div>
     </div>
   </div>
@@ -546,12 +549,9 @@ async function testEndpoint(ep: AcpEndpoint) {
 </script>
 
 <style scoped>
-.page-container { padding: 0; height: 100%; min-height: 0; overflow: auto; }
-.page-shell { display: flex; flex-direction: column; gap: 14px; padding: 22px; min-height: 100%; }
-.page-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; }
-.page-kicker { font-size: 11px; color: var(--mc-text-tertiary); text-transform: uppercase; letter-spacing: 0.08em; font-weight: 700; }
-.page-title { font-size: 22px; font-weight: 700; color: var(--mc-text-primary); margin: 4px 0; }
-.page-desc { color: var(--mc-text-secondary); margin: 0; font-size: 13px; }
+/* The fixed mc-page-frame card is the canvas and scrolls internally;
+   header shape comes from the global .mc-page-header / kicker styles. */
+.mc-page-inner.acp-page { display: flex; flex-direction: column; gap: 14px; }
 .header-actions { display: flex; gap: 8px; }
 .btn-primary { padding: 8px 14px; background: var(--mc-primary); color: white; border: none; border-radius: 10px; font-size: 13px; font-weight: 600; cursor: pointer; }
 .btn-primary:hover { background: var(--mc-primary-hover); }
