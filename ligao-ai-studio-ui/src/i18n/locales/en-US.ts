@@ -96,6 +96,12 @@ export default {
       streaming: 'Generating...',
       error: 'Disconnected',
     },
+    stats: {
+      counts: '{turns} turns · {steps} steps',
+      elapsed: '{duration}',
+      tokensPerSecond: '{throughput} tok/s',
+      tokens: 'In {input} tok · Out {output} tok',
+    },
     thinking: 'Thinking',
     thinkingInProgress: 'Thinking...',
     stopped: 'Generation stopped',

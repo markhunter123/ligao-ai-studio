@@ -96,6 +96,12 @@ export default {
       streaming: '生成中...',
       error: '连接断开',
     },
+    stats: {
+      counts: '{turns} 轮 · {steps} 步',
+      elapsed: '已用时 {duration}',
+      tokensPerSecond: '{throughput} tok/s',
+      tokens: '输入 {input} tok · 输出 {output} tok',
+    },
     thinking: '深度思考',
     thinkingInProgress: '思考中...',
     stopped: '已停止生成',

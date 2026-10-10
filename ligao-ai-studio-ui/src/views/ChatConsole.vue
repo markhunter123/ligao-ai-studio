@@ -227,6 +227,7 @@
         :stream-phase="streamPhase"
         :queued-message="queuedMessage"
         :queue-size="queueSize"
+        :stats="chatMetrics"
         @submit="handleSendMessage"
         @stop="handleStopStream"
         @cancel-queued="handleCancelQueued"
@@ -268,6 +269,7 @@ import { copyToClipboard } from '@/utils/clipboard'
 import { useFileDrop } from '@/composables/useFileDrop'
 import { useIsMobile, useMediaQuery, BREAKPOINTS } from '@/composables/useBreakpoint'
 import { useChat } from '@/composables/chat/useChat'
+import { useChatMetrics } from '@/composables/chat/useChatMetrics'
 import { reconstructErrorInfo } from '@/types/chatError'
 import { reconcileMessages, extractMessages } from '@/utils/messageReconcile'
 import type { Conversation, Agent, ModelConfig, ProviderInfo, ActiveModelsInfo, ChatAttachment, MessageContentPart, Message, ToolCallMeta, StreamPhase } from '@/types'
@@ -714,6 +716,13 @@ const {
       }
     }
   },
+})
+
+// 实时 / 已结束轮次的紧凑统计条（tokens/s、token 用量、耗时、工具迭代数）
+const chatMetrics = useChatMetrics({
+  messages,
+  isGenerating,
+  lifecycleStage,
 })
 
 // ============ 连接状态 ============

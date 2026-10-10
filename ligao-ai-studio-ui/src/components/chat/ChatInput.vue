@@ -221,6 +221,11 @@
     <!-- 底部信息 -->
     <div class="input-footer">
       <span class="input-hint">{{ hint }}</span>
+      <ChatStatsStrip
+        v-if="stats?.hasData"
+        :metrics="stats"
+        class="input-stats"
+      />
       <span v-if="maxLength" class="input-length">
         {{ inputValue.length }}/{{ maxLength }}
       </span>
@@ -244,7 +249,9 @@ import { useI18n } from 'vue-i18n'
 import { ArrowDown, CloseBold, MagicStick, Microphone, Paperclip, Promotion, Select, Timer, WarningFilled } from '@element-plus/icons-vue'
 import { useToolLabel } from '@/composables/useToolLabel'
 import SkillSlashMenu from '@/components/chat/SkillSlashMenu.vue'
+import ChatStatsStrip from '@/components/chat/ChatStatsStrip.vue'
 import type { ChatAttachment, PendingApprovalMeta, StreamPhase, QueuedMessage, Skill } from '@/types'
+import type { ChatMetrics } from '@/composables/chat/useChatMetrics'
 
 interface Props {
   /** 输入值 */
@@ -290,6 +297,8 @@ interface Props {
    * a skill would be a dead end.
    */
   skillsEnabled?: boolean
+  /** Compact agent-run statistics rendered to the right of the model hint. */
+  stats?: ChatMetrics | null
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -310,6 +319,7 @@ const props = withDefaults(defineProps<Props>(), {
   thinkingEnabled: false,
   thinkingSupported: true,
   skillsEnabled: true,
+  stats: null,
 })
 
 const emit = defineEmits<{
@@ -843,8 +853,8 @@ defineExpose({
 /* 底部信息 */
 .input-footer {
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  gap: 8px;
   margin-top: 6px;
   padding: 0 4px;
 }
@@ -852,11 +862,22 @@ defineExpose({
 .input-hint {
   font-size: 12px;
   color: var(--mc-text-tertiary, #94a3b8);
+  flex: 0 1 auto;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.input-stats {
+  margin-left: auto;
+  min-width: 0;
 }
 
 .input-length {
   font-size: 12px;
   color: var(--mc-text-tertiary, #94a3b8);
+  flex-shrink: 0;
 }
 
 /* 隐藏的文件输入 */
