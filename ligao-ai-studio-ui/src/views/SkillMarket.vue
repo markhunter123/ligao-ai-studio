@@ -101,29 +101,10 @@
                 <!-- RFC-042 §2.2.4 — slug under display name when they differ -->
                 <div v-if="hasI18nName(skill)" class="skill-slug">{{ skill.name }}</div>
               </div>
-              <!-- MCP-derived skills accept the enable/disable toggle — it
-                   forwards to the underlying MCP server connection, so the
-                   Skills page and Settings ▸ MCP Connections stay in sync.
-                   ACP-derived skills have no such mapping and stay read-only
-                   (padlock); configure / delete are gated for both below. -->
-              <label
-                v-if="!isSkillRowVirtual(skill) || isMcpSkillRow(skill)"
-                class="toggle-switch"
-                @click.stop
-              >
+              <label class="toggle-switch" @click.stop>
                 <input type="checkbox" :checked="skill.enabled" @change="toggleSkill(skill)" />
                 <span class="toggle-slider"></span>
               </label>
-              <span
-                v-else
-                class="virtual-toggle-hint"
-                :title="$t('skills.virtualReadonlyHint')"
-              >
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
-                  <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
-                </svg>
-              </span>
             </div>
 
             <p class="skill-desc">{{ skill.description || t('skills.noDescription') }}</p>
@@ -136,7 +117,7 @@
               <span class="source-label" :class="getSourceClass(skill)">{{ getSourceLabel(skill) }}</span>
               <span v-if="skill.version" class="skill-version">v{{ skill.version }}</span>
               <span
-                v-if="!isSkillRowVirtual(skill) && skill.lastActivityAt"
+                v-if="skill.lastActivityAt"
                 class="lifecycle-badge"
                 :class="{ 'lifecycle-badge--stale': skill.lifecycleState === 'stale',
                           'lifecycle-badge--archived': skill.lifecycleState === 'archived' }"
@@ -157,7 +138,6 @@
                   </svg>
                 </button>
                 <button
-                  v-if="!isSkillRowVirtual(skill)"
                   class="skill-btn"
                   :title="t('skills.actions.export') || '导出'"
                   @click.stop="handleExportSkillFromCard(skill)"
@@ -169,7 +149,6 @@
                   </svg>
                 </button>
                 <button
-                  v-if="!isSkillRowVirtual(skill)"
                   class="skill-btn"
                   :title="t('skills.actions.share') || '分享'"
                   @click.stop="handleShareSkillFromCard(skill)"
@@ -183,7 +162,6 @@
                   </svg>
                 </button>
                 <button
-                  v-if="!isSkillRowVirtual(skill)"
                   class="skill-btn"
                   :title="t('skills.actions.configure')"
                   @click="openEditFromCard(skill)"
@@ -194,7 +172,7 @@
                   </svg>
                 </button>
                 <button
-                  v-if="skill.skillType !== 'builtin' && !isSkillRowVirtual(skill)"
+                  v-if="skill.skillType !== 'builtin'"
                   class="skill-btn danger"
                   :title="t('skills.actions.delete')"
                   @click="deleteSkill(skill)"
@@ -324,7 +302,7 @@
              DB-only display overrides (editable) + collapsed manifest. -->
         <div v-if="detailTab === 'overview'" class="detail-section">
           <!-- Lifecycle: state + last-used + pin / archive / restore. -->
-          <div v-if="!isVirtualSkill" class="detail-block">
+          <div class="detail-block">
             <div class="detail-block-head">
               <h4 class="detail-block-title">{{ t('skills.lifecycle.section') }}</h4>
             </div>
@@ -381,7 +359,7 @@
             <div class="detail-block-head">
               <h4 class="detail-block-title">{{ t('skills.detail.displayOverridesSection') }}</h4>
               <button
-                v-if="!isVirtualSkill && !editingIdentity"
+                v-if="!editingIdentity"
                 class="detail-edit-btn"
                 @click="handleExportSkill"
                 :title="t('skills.actions.export')"
@@ -394,7 +372,7 @@
                 导出
               </button>
               <button
-                v-if="!isVirtualSkill && !editingIdentity"
+                v-if="!editingIdentity"
                 class="detail-edit-btn"
                 @click="handleShareSkill"
                 :title="t('skills.actions.share')"
@@ -409,7 +387,7 @@
                 分享
               </button>
               <button
-                v-if="!isVirtualSkill && !editingIdentity"
+                v-if="!editingIdentity"
                 class="detail-edit-btn"
                 @click="startEditIdentity"
               >
@@ -428,8 +406,7 @@
                 </button>
               </div>
             </div>
-            <p v-if="isVirtualSkill" class="detail-readonly-banner">{{ t('skills.detail.virtualReadonly') }}</p>
-            <p v-else class="detail-hint">{{ t('skills.detail.displayOverridesHint') }}</p>
+            <p class="detail-hint">{{ t('skills.detail.displayOverridesHint') }}</p>
 
             <!-- Icon row spans both modes — view shows the resolved
                  glyph + label; edit turns the tile into a "pick"
@@ -497,7 +474,6 @@
             <div class="detail-block-head">
               <h4 class="detail-block-title">{{ t('skills.fields.skillContent') }}</h4>
               <button
-                v-if="!isVirtualSkill"
                 class="detail-edit-btn detail-edit-primary"
                 @click="startEditBody"
               >
@@ -569,12 +545,7 @@
             <span v-if="detailSkill.securityScanTime" class="scan-findings-time">
               · {{ formatScanTime(detailSkill.securityScanTime) }}
             </span>
-            <!-- Issue #83 follow-up: virtual MCP/ACP skills can't be rescanned —
-                 backend rejects with err.skill.virtual_readonly. Hide the button
-                 so users don't trigger a guaranteed 4xx; the readonly banner
-                 already tells them where to go. -->
             <button
-              v-if="!isVirtualSkill"
               class="scan-rescan-btn"
               :disabled="rescanning[String(detailSkill.id)]"
               @click="rescanSkill(detailSkill)"
@@ -870,23 +841,6 @@ const editBodyForm = ref<{ skillContent: string; sourceCode: string }>({
  *  at creation time. Everything else is filled in via the drawer. */
 const newForm = ref<{ name: string; description: string; icon: string }>({ name: '', description: '', icon: '' })
 
-/** Virtual MCP/ACP-derived skills are read-only mirrors of a connection
- *  row — there is no ligao_skill row to edit or delete, so the drawer hides
- *  the Edit affordance. The bridge encodes their ids with the sign bit set,
- *  so a virtual id is always negative while real Snowflake ids are always
- *  positive. Checking the leading '-' is precision-safe — no Number()
- *  round-trip that would corrupt ids past 2^53. */
-function isVirtualSkillId(id: unknown): boolean {
-  if (id === null || id === undefined) return false
-  return String(id).trim().startsWith('-')
-}
-/** Per-row check used by the card-level configure / delete buttons. */
-const isSkillRowVirtual = (skill: { id?: unknown } | null | undefined) => isVirtualSkillId(skill?.id)
-/** MCP-derived rows stay read-only for edit/delete, but their enable/disable
- *  toggle is honored — it forwards to the underlying MCP server connection. */
-const isMcpSkillRow = (skill: { skillType?: unknown } | null | undefined) =>
-  skill?.skillType === 'mcp'
-const isVirtualSkill = computed(() => isVirtualSkillId(detailSkill.value?.id))
 const isBuiltinDetail = computed(() => detailSkill.value?.skillType === 'builtin' || !!detailSkill.value?.builtin)
 
 /** RFC-090 §4.4 — pre-flight dialog state. */
@@ -1010,10 +964,6 @@ watch(detailTab, (tab) => {
 const categoryTabs = computed(() => [
   { label: t('skills.tabs.all'), value: 'all', icon: 'all', kind: 'source' },
   { label: t('skills.tabs.builtin'), value: 'builtin', icon: 'builtin', kind: 'source' },
-  { label: t('skills.tabs.mcp'), value: 'mcp', icon: 'mcp', kind: 'source' },
-  // ACP (Agent Communication Protocol) — auto-bridged from
-  // Settings ▸ ACP Endpoints; one card per enabled endpoint.
-  { label: t('skills.tabs.acp'), value: 'acp', icon: 'acp', kind: 'source' },
   { label: t('skills.tabs.dynamic'), value: 'dynamic', icon: 'dynamic', kind: 'source' },
   // Lifecycle tabs — orthogonal to skillType; they filter by lifecycle_state.
   { label: t('skills.tabs.stale'), value: 'stale', icon: 'clock', kind: 'lifecycle' },
@@ -1098,6 +1048,14 @@ function resetSegmentPages() {
   segments.available.page = 1
 }
 
+/** Skill types that should not appear on the Skills management page.
+ *  MCP/ACP connections have their own settings pages; their mirrored rows
+ *  are filtered out client-side so the backend list API stays unchanged. */
+const EXCLUDED_SKILL_TYPES = ['mcp', 'acp']
+function isProtocolSkillType(type: string | undefined): boolean {
+  return EXCLUDED_SKILL_TYPES.includes(type || '')
+}
+
 /** Reload both sections. Kept named loadSkills so existing call sites
  *  (create / toggle / delete / refresh) reload the whole view unchanged. */
 async function loadSkills() {
@@ -1121,6 +1079,8 @@ async function loadSegment(key: 'enabled' | 'available', allowPageClamp = true) 
     const res: any = await skillApi.page(params)
     const data = res.data || {}
     const records: Skill[] = Array.isArray(data.records) ? data.records : []
+    const visibleRecords = records.filter(s => !isProtocolSkillType(s.skillType))
+    const excludedOnPage = records.length - visibleRecords.length
     // Trust the backend total when it's positive. Only fall back to an inferred
     // floor when the backend reports 0 (broken pagination interceptor) — using
     // Math.max unconditionally produced an off-by-one whenever total was an
@@ -1134,11 +1094,11 @@ async function loadSegment(key: 'enabled' | 'available', allowPageClamp = true) 
         await loadSegment(key, false)
         return
       }
-      seg.total = reportedTotal
-    } else if (records.length > 0) {
-      seg.total = records.length >= seg.size
-        ? seg.page * seg.size + 1
-        : (seg.page - 1) * seg.size + records.length
+      seg.total = Math.max(visibleRecords.length, reportedTotal - excludedOnPage)
+    } else if (visibleRecords.length > 0) {
+      seg.total = visibleRecords.length >= seg.size
+        ? seg.page * seg.size + 1 - excludedOnPage
+        : (seg.page - 1) * seg.size + visibleRecords.length
     } else {
       if (allowPageClamp && seg.page > 1) {
         seg.page = 1
@@ -1147,7 +1107,7 @@ async function loadSegment(key: 'enabled' | 'available', allowPageClamp = true) 
       }
       seg.total = 0
     }
-    seg.items = records
+    seg.items = visibleRecords
   } catch (e) {
     seg.items = []
     seg.total = 0
@@ -1157,7 +1117,20 @@ async function loadSegment(key: 'enabled' | 'available', allowPageClamp = true) 
 async function loadCounts() {
   try {
     const res: any = await skillApi.counts()
-    counts.value = res.data || {}
+    const raw: Record<string, number> = res.data || {}
+    const filtered: Record<string, number> = {}
+    let nonProtocolSum = 0
+    for (const [key, value] of Object.entries(raw)) {
+      if (EXCLUDED_SKILL_TYPES.includes(key)) continue
+      const n = Number(value) || 0
+      filtered[key] = n
+      if (key !== 'all') nonProtocolSum += n
+    }
+    // 'all' should reflect only the skill types still surfaced on this page.
+    if ('all' in filtered) {
+      filtered.all = nonProtocolSum
+    }
+    counts.value = filtered
   } catch (e) {
     counts.value = {}
   }
@@ -1218,14 +1191,9 @@ async function createSkillFromModal() {
 }
 
 /** Old configure-on-card button now lands in the drawer Overview tab in
- *  edit mode — keeps the surface contract but skips the modal trip.
- *  Virtual MCP/ACP-derived skills aren't editable; the card-level button
- *  is hidden for them, but if any other call path reaches here with a
- *  virtual skill, fall through to view mode rather than opening an edit
- *  surface that will 4xx on save. */
+ *  edit mode — keeps the surface contract but skips the modal trip. */
 function openEditFromCard(skill: Skill) {
-  const opts = isSkillRowVirtual(skill) ? undefined : { editIdentity: true }
-  openDetailDrawer(skill, 'overview', opts)
+  openDetailDrawer(skill, 'overview', { editIdentity: true })
 }
 
 // ==================== Inline edit (Overview / Body) ====================
@@ -1450,14 +1418,6 @@ async function deleteSkill(idOrSkill: string | number | Skill) {
 }
 
 async function toggleSkill(skill: Skill) {
-  // MCP virtual skills support enable/disable — the backend forwards it to
-  // the underlying MCP server. ACP virtual skills stay read-only: the UI
-  // hides their toggle, and this short-circuit keeps the toast accurate if
-  // a programmatic caller still reaches here.
-  if (isSkillRowVirtual(skill) && !isMcpSkillRow(skill)) {
-    mcToast.warning(t('skills.virtualReadonlyHint'))
-    return
-  }
   try {
     await skillApi.toggle(skill.id, !skill.enabled)
     await loadAll()
