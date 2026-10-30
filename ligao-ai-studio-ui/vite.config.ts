@@ -6,17 +6,7 @@ import { resolve } from 'path'
 
 export default defineConfig({
   plugins: [
-    vue({
-      template: {
-        compilerOptions: {
-          // Treat <model-viewer> as a custom Web Component (registered globally
-          // via @google/model-viewer in main.ts) so Vue doesn't try to resolve
-          // it as a Vue component and emit a "Failed to resolve component"
-          // warning at runtime.
-          isCustomElement: (tag) => tag === 'model-viewer',
-        },
-      },
-    }),
+    vue(),
     tailwindcss(),
     // ANALYZE=1 pnpm build writes dist/stats.html. Skipped on normal builds so
     // CI artifact upload is opt-in and the Docker image build doesn't waste

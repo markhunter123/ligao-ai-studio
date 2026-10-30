@@ -71,7 +71,7 @@ Tool Guard 是守门员。超时是**每个工具独立**的（这样一个慢�
 | **核心层（CORE）** | 始终完整广播，带完整 schema | 开箱即用 |
 | **扩展层（EXTENSION）** | 只列一份压缩目录——名字 + 来源 + 一行说明，完整 schema 隐藏 | 先用 `enable_tool` 激活才能调 |
 
-**默认分层**：生成类工具（`image_generate`、`music_generate`、`video_generate`、`model3d_generate`）和 `browser_use` 默认放进**扩展层**；其余全部是**核心层**。
+**默认分层**：生成类工具（`image_generate`、`music_generate`、`video_generate`）和 `browser_use` 默认放进**扩展层**；其余全部是**核心层**。
 
 - **页面控制**——Tools 页面分「核心 / 扩展」两栏，内置工具和渠道工具每行有一个层级开关；MCP / ACP 工具的层级是锁定的。
 - **持久化**——层级存在 `ligao_tool.disclosure_tier` 和 `ligao_mcp_server.disclosure_tier`。

@@ -124,12 +124,6 @@ const sections = computed(() => [
     label: t('settings.sections.video'),
     icon: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg>',
   },
-  {
-    id: 'model3d',
-    path: '/settings/model3d',
-    label: t('settings.sections.model3d'),
-    icon: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2 L21 7 L21 17 L12 22 L3 17 L3 7 Z"/><path d="M3 7 L12 12 L21 7"/><path d="M12 12 L12 22"/></svg>',
-  },
   // Divider: Workspace
   { id: 'divider-workspace', path: '', label: t('settings.sections.workspace', 'Workspace'), icon: '', isDivider: true },
   {
@@ -188,12 +182,6 @@ const sections = computed(() => [
     path: '/settings/tools',
     label: t('nav.toolsCatalog'),
     icon: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>',
-  },
-  {
-    id: 'proxy',
-    path: '/settings/proxy',
-    label: t('settings.sections.proxy', '网络代理'),
-    icon: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>',
   },
   // RFC-090 Phase 7: ACP endpoints
   {

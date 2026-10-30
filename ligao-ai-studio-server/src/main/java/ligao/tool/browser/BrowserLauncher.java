@@ -365,14 +365,6 @@ public class BrowserLauncher {
         if (IS_WINDOWS) {
             args.add("--disable-gpu");
         }
-        // Chromium does not honor the JVM proxy selector / system properties, so
-        // route it explicitly when a global proxy is active. Bypass loopback so
-        // the local CDP endpoint and local services stay reachable.
-        String proxyServer = ligao.system.proxy.ProxyManager.chromeProxyServer();
-        if (proxyServer != null && !proxyServer.isBlank()) {
-            args.add("--proxy-server=" + proxyServer);
-            args.add("--proxy-bypass-list=<-loopback>");
-        }
         return args;
     }
 

@@ -199,7 +199,7 @@ Ligao 在 link 分支检测到 `mp.weixin.qq.com` 后，会自动给模型追加
 
 ## 异步任务回推
 
-图像生成 (`image_generate`) / 音乐生成 (`music_generate`) / 视频生成 (`video_generate`) / 3D 模型生成 (`model3d_generate`) 都是**异步任务**——agent 拿到 task id 立刻返回，真正的产物 30 秒～几分钟后才出来。
+图像生成 (`image_generate`) / 音乐生成 (`music_generate`) / 视频生成 (`video_generate`) 都是**异步任务**——agent 拿到 task id 立刻返回，真正的产物 30 秒～几分钟后才出来。
 
 历史问题：产物只出现在 Web 控制台的会话历史里，**WeCom 群里看不到**。
 

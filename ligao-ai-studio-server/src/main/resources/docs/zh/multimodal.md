@@ -90,12 +90,6 @@ Google 的图像生成走 **Nano Banana Pro**（`gemini-3-pro-image-preview`）�
 
 音乐生成工具接收 prompt、可选风格标签、可选歌词。输出是一条 MP3 挂在消息上。
 
-### 3D 模型生成 —— 一个供应商
-
-- **腾讯混元 3D**——`HY-3D-3.1` / `HY-3D-3.0`（Pro，支持 PBR / 多视角 / 白模）/ `HY-3D-Express`（极速版）
-
-文生 3D 与图生 3D 双模式，输出 `.glb`，前端 `<model-viewer>` 直接渲染可拖拽预览。完整配置步骤见 **[3D 模型生成](./model3d.md)**。
-
 ### 语音合成（TTS）—— 三个供应商
 
 - **DashScope CosyVoice**——中英文，韵律自然

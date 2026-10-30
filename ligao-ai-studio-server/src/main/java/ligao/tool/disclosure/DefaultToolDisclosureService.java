@@ -47,7 +47,7 @@ public class DefaultToolDisclosureService implements ToolDisclosureService {
      * {@code disclosure_tier} always overrides these.
      */
     private static final Set<String> BUILTIN_EXTENSION_DEFAULTS = Set.of(
-            "image_generate", "music_generate", "video_generate", "model3d_generate", "browser_use");
+            "image_generate", "music_generate", "video_generate", "browser_use");
 
     private final ToolService toolService;
     private final McpServerService mcpServerService;

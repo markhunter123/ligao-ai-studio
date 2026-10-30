@@ -90,12 +90,6 @@ Same async-attach model as image generation. Videos appear inline in the chat on
 
 The music-generation tool takes a prompt, an optional style tag, and optional lyrics. Output is an MP3 attached to the message.
 
-### 3D model generation — one provider
-
-- **Tencent Hunyuan 3D** — `HY-3D-3.1` / `HY-3D-3.0` (Pro, supports PBR / multi-view / white-model) / `HY-3D-Express` (rapid)
-
-Text-to-3D and image-to-3D both work; output is a `.glb` rendered inline by `<model-viewer>` for drag-to-rotate preview. Full setup walkthrough: **[3D Model Generation](./model3d.md)**.
-
 ### Text-to-speech (TTS) — three providers
 
 - **DashScope CosyVoice** — Chinese + English, natural prosody

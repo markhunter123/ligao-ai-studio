@@ -950,7 +950,7 @@ public class ConversationService {
                 case "text" -> appendSegment(text, part.getText());
                 case "thinking", "tool_call", "parse_error" -> { /* skip — frontend reads these from contentParts directly */ }
                 case "file" -> appendSegment(text, renderFilePart(part));
-                case "image", "video", "audio", "model3d" -> appendSegment(text, renderMediaPart(part));
+                case "image", "video", "audio" -> appendSegment(text, renderMediaPart(part));
                 default -> appendSegment(text, part.getText());
             }
         }
@@ -1010,7 +1010,7 @@ public class ConversationService {
     }
 
     /**
-     * Render an image/video/audio/3D-model content part for the LLM prompt.
+     * Render an image/video/audio content part for the LLM prompt.
      * <p>
      * Without this marker, media parts are invisible in the rendered text — the LLM
      * sees only the user's accompanying text and has no idea an attachment was sent.
@@ -1025,7 +1025,6 @@ public class ConversationService {
             case "image" -> "[图片]";
             case "video" -> "[视频]";
             case "audio" -> "[音频]";
-            case "model3d" -> "[3D 模型]";
             default -> "[附件]";
         };
         String name = safe(part.getFileName());

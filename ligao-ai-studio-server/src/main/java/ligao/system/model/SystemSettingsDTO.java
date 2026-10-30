@@ -129,12 +129,6 @@ public class SystemSettingsDTO {
     private String musicProvider;
     private Boolean musicFallbackEnabled;
 
-    // ===== 3D 模型生成配置 =====
-    private Boolean model3dEnabled;
-    /** 首选 3D provider: auto / hunyuan-3d */
-    private String model3dProvider;
-    private Boolean model3dFallbackEnabled;
-
     // ===== Multimodal sidecar routing =====
     /**
      * Default vision-capable model id used to caption image attachments when the

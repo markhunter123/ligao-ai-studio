@@ -199,7 +199,7 @@ This way:
 
 ## Async-task forwarding
 
-Image generation (`image_generate`) / music generation (`music_generate`) / video generation (`video_generate`) / 3D model generation (`model3d_generate`) are all **async tasks** — the agent returns a task id immediately; the actual artifact arrives 30 seconds to several minutes later.
+Image generation (`image_generate`) / music generation (`music_generate`) / video generation (`video_generate`) are all **async tasks** — the agent returns a task id immediately; the actual artifact arrives 30 seconds to several minutes later.
 
 Earlier bug: artifacts only showed up in the Web console's history view, **invisible in the WeCom group**.
 

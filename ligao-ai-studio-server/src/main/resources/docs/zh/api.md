@@ -66,7 +66,7 @@ curl -N -X POST http://localhost:18088/api/v1/chat/stream \
 
 ### 多模态生成
 
-图片、视频、音乐、3D 生成是 Agent 工具（`image_generate`、`video_generate`、`music_generate`、`model3d_generate`），不是独立的 `/api/v1/image`、`/api/v1/video`、`/api/v1/music` REST Controller。当前存在的相关 REST 面是 TTS/STT 和生成文件下载。
+图片、视频、音乐生成是 Agent 工具（`image_generate`、`video_generate`、`music_generate`），不是独立的 `/api/v1/image`、`/api/v1/video`、`/api/v1/music` REST Controller。当前存在的相关 REST 面是 TTS/STT 和生成文件下载。
 
 ### 非 REST 端点
 

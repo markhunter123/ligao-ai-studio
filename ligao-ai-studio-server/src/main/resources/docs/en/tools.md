@@ -71,7 +71,7 @@ As the tool count grows, the system prompt balloons with dozens of full tool sch
 | **CORE** | Always advertised in full, with the complete schema | Yes |
 | **EXTENSION** | Only a compressed directory — name + source + one-line description; the full schema stays hidden | No — activate with `enable_tool` first |
 
-**Default tiering**: the generative tools (`image_generate`, `music_generate`, `video_generate`, `model3d_generate`) and `browser_use` default to **EXTENSION**; everything else is **CORE**.
+**Default tiering**: the generative tools (`image_generate`, `music_generate`, `video_generate`) and `browser_use` default to **EXTENSION**; everything else is **CORE**.
 
 - **Page control** — the Tools page has Core and Extension sections with a per-row tier toggle for built-in and channel tools; MCP / ACP tools are locked.
 - **Persistence** — the tier is stored in `ligao_tool.disclosure_tier` and `ligao_mcp_server.disclosure_tier`.

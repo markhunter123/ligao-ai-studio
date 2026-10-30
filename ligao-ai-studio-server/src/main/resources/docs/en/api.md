@@ -66,7 +66,7 @@ The current backend health surface is `GET /api/v1/system/health`. The old `/api
 
 ### Multimodal Generation
 
-Image, video, music, and 3D generation are agent tools (`image_generate`, `video_generate`, `music_generate`, `model3d_generate`), not standalone `/api/v1/image`, `/api/v1/video`, or `/api/v1/music` REST controllers. REST surfaces that do exist here are TTS/STT and generated-file download.
+Image, video, and music generation are agent tools (`image_generate`, `video_generate`, `music_generate`), not standalone `/api/v1/image`, `/api/v1/video`, or `/api/v1/music` REST controllers. REST surfaces that do exist here are TTS/STT and generated-file download.
 
 ### Non-REST Endpoint
 

@@ -148,12 +148,6 @@ const router = createRouter({
               component: () => import('@/views/Settings/Video/index.vue'),
               meta: { title: 'Settings - Video', requiredCapability: 'manage:models' },
             },
-            {
-              path: 'model3d',
-              name: 'SettingsModel3D',
-              component: () => import('@/views/Settings/Model3D/index.vue'),
-              meta: { title: 'Settings - 3D Model', requiredCapability: 'manage:models' },
-            },
             // Workspace management
             {
               path: 'workspaces',
@@ -213,12 +207,6 @@ const router = createRouter({
               name: 'SettingsTools',
               component: () => import('@/views/Tools.vue'),
               meta: { title: 'Settings - Tools Catalog', requiredCapability: 'manage:settings' },
-            },
-            {
-              path: 'proxy',
-              name: 'SettingsProxy',
-              component: () => import('@/views/Settings/Proxy/index.vue'),
-              meta: { title: 'Settings - Proxy', requiredCapability: 'manage:settings' },
             },
             // RFC-090 Phase 7: ACP endpoints (External coding agents)
             {
