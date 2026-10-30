@@ -62,6 +62,13 @@ export class WavRecorder {
     /** Sample rate the AudioContext is actually running at — may differ from TARGET_SAMPLE_RATE. */
     private inputSampleRate = TARGET_SAMPLE_RATE;
     private startTimeMs = 0;
+    /**
+     * Streaming sink for dictation: when set, every processed mic chunk is
+     * resampled to 16 kHz, encoded to 16-bit PCM, and handed over live so the
+     * caller can forward it to the STT WebSocket while the user is still
+     * speaking. Null = classic whole-clip mode (TalkMode-style batch).
+     */
+    private chunkSink: ((pcm: ArrayBuffer) => void) | null = null;
 
     /**
      * Pre-acquire microphone permission and warm the audio graph without
@@ -80,9 +87,14 @@ export class WavRecorder {
     /**
      * Begin capturing from the microphone. Throws if mic access is denied.
      * Already-started recorders are idempotent — calling start twice is a no-op.
+     *
+     * @param onPcmChunk optional streaming sink — when provided, each mic
+     * chunk is resampled to 16 kHz / 16-bit PCM and emitted live (dictation
+     * mode) in addition to the whole-clip buffer.
      */
-    async start(): Promise<void> {
+    async start(onPcmChunk?: (pcm: ArrayBuffer) => void): Promise<void> {
         if (this.audioContext) return;
+        this.chunkSink = onPcmChunk ?? null;
 
         // sampleRate hint: browsers honour it on Chrome/Edge but Safari may
         // ignore it and run at the device default. We resample manually in
@@ -106,7 +118,18 @@ export class WavRecorder {
         this.processor.onaudioprocess = (e) => {
             const channel = e.inputBuffer.getChannelData(0);
             // Defensive copy — the underlying buffer is reused on the next callback.
-            this.chunks.push(new Float32Array(channel));
+            const copy = new Float32Array(channel);
+            this.chunks.push(copy);
+            if (this.chunkSink) {
+                try {
+                    const resampled = this.inputSampleRate === TARGET_SAMPLE_RATE
+                        ? copy
+                        : downsample(copy, this.inputSampleRate, TARGET_SAMPLE_RATE);
+                    this.chunkSink(encodePcmChunk(resampled));
+                } catch (err) {
+                    console.warn('[WavRecorder] chunk encode failed', err);
+                }
+            }
         };
         // Wire source → processor → silent gain → destination. The gain=0
         // node muzzles the echo through the speakers but keeps the chain
@@ -137,6 +160,7 @@ export class WavRecorder {
      */
     async stop(): Promise<WavRecording | null> {
         if (!this.audioContext) return null;
+        this.chunkSink = null;
 
         const durationSeconds = Math.round((Date.now() - this.startTimeMs)) / 1000;
         const sampleRate = this.inputSampleRate;
@@ -226,6 +250,22 @@ function downsample(samples: Float32Array, fromRate: number, toRate: number): Fl
         const hi = Math.min(lo + 1, samples.length - 1);
         const frac = srcIndex - lo;
         out[i] = samples[lo] * (1 - frac) + samples[hi] * frac;
+    }
+    return out;
+}
+
+/**
+ * Encode a Float32 chunk to raw 16-bit little-endian PCM (no WAV header) —
+ * the streaming dictation format the STT WebSocket forwards to Paraformer.
+ */
+function encodePcmChunk(samples: Float32Array): ArrayBuffer {
+    const out = new ArrayBuffer(samples.length * 2);
+    const view = new DataView(out);
+    let offset = 0;
+    for (let i = 0; i < samples.length; i++, offset += 2) {
+        const clamped = Math.max(-1, Math.min(1, samples[i]));
+        const intVal = clamped < 0 ? clamped * 0x8000 : clamped * 0x7fff;
+        view.setInt16(offset, intVal, true);
     }
     return out;
 }

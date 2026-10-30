@@ -161,6 +161,18 @@
         @paste="handlePaste"
       ></textarea>
 
+      <!-- 语音听写条：录音中显示，识别文字实时进入上方输入框（微信式） -->
+      <div v-if="dictating" class="dictation-bar" :class="{ 'is-ready': dictationReady }">
+        <span class="dictation-dot" aria-hidden="true"></span>
+        <span class="dictation-text" :class="{ 'is-empty': !dictationLiveText }">
+          {{ dictationLiveText || (dictationFinalizing ? t('voice.finalizing') : t('voice.listening')) }}
+        </span>
+        <span class="dictation-hint">{{ t('voice.hintAltStop') }}</span>
+        <button type="button" class="dictation-stop" :disabled="dictationFinalizing" @click="stopDictation">
+          {{ t('voice.stopButton') }}
+        </button>
+      </div>
+
       <div class="input-actions">
         <!-- 附件按钮 -->
         <button
@@ -187,15 +199,17 @@
           <el-icon><MagicStick /></el-icon>
         </button>
 
-        <!-- Talk Mode 按钮 -->
+        <!-- 语音输入按钮：点击变红开始录音，再次点击/右 Alt 结束（微信式听写） -->
         <button
           v-if="enableTalkMode"
           type="button"
           class="action-btn talk-btn"
+          :class="{ recording: dictating }"
           :disabled="disabled || loading"
-          @click="emit('talk')"
-          :title="t('talk.title')"
+          @click="toggleDictation"
+          :title="dictating ? t('voice.stopHint') : t('voice.startHint')"
         >
+          <span v-if="dictating" class="recording-ring" aria-hidden="true"></span>
           <el-icon><Microphone /></el-icon>
         </button>
 
@@ -248,6 +262,7 @@ import { ref, computed, nextTick, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { ArrowDown, CloseBold, MagicStick, Microphone, Paperclip, Promotion, Select, Timer, WarningFilled } from '@element-plus/icons-vue'
 import { useToolLabel } from '@/composables/useToolLabel'
+import { useVoiceDictation } from '@/composables/chat/useVoiceDictation'
 import SkillSlashMenu from '@/components/chat/SkillSlashMenu.vue'
 import ChatStatsStrip from '@/components/chat/ChatStatsStrip.vue'
 import type { ChatAttachment, PendingApprovalMeta, StreamPhase, QueuedMessage, Skill } from '@/types'
@@ -339,12 +354,49 @@ const emit = defineEmits<{
    * Security > 自动批准策略 with password confirmation).
    */
   'approve-always': [payload: { pendingId: string; scope: 'CONVERSATION' | 'AGENT' | 'USER' }]
-  talk: []
   'toggle-thinking': []
 }>()
 
 const { t } = useI18n()
 const { getToolLabel } = useToolLabel()
+
+// ---- 语音听写（微信式，右 Alt 快捷键，见 useVoiceDictation） ----
+const {
+    active: dictating,
+    ready: dictationReady,
+    finalizing: dictationFinalizing,
+    partial: dictationPartial,
+    toggle: toggleDictation,
+    stop: stopDictation,
+} = useVoiceDictation({
+    enabled: () => props.enableTalkMode && !props.disabled && !props.pendingApproval,
+})
+
+/**
+ * Live dictation → input mirroring. The recognized draft is appended after
+ * `dictationBase` (the input content when recording started); each partial
+ * rewrite replaces only the draft suffix, so text typed before the shortcut
+ * stays put. Manual keystrokes while recording re-anchor the base so they
+ * aren't clobbered by the next partial.
+ */
+const dictationBase = ref('')
+watch(dictating, (on) => {
+    if (on) dictationBase.value = props.modelValue
+})
+watch(dictationPartial, (text) => {
+    if (!dictating.value) return
+    emit('update:modelValue', dictationBase.value + text)
+})
+watch(() => props.modelValue, (val) => {
+    if (!dictating.value) return
+    const expected = dictationBase.value + dictationPartial.value
+    if (val !== expected) {
+        dictationBase.value = val.endsWith(dictationPartial.value)
+            ? val.slice(0, -dictationPartial.value.length)
+            : val
+    }
+})
+const dictationLiveText = computed(() => dictationPartial.value.trim())
 
 /**
  * The most decision-relevant part of the pending tool call, shown so the user
@@ -826,6 +878,106 @@ defineExpose({
 .talk-btn:hover:not(:disabled) {
   color: var(--mc-primary, #1266AA);
   background: var(--mc-primary-light, rgba(18, 102, 170, 0.08));
+}
+
+/* 录音中：红色语义态（"按一下变红"）+ 呼吸光环表达正在收录 */
+.talk-btn { position: relative; }
+.talk-btn.recording {
+  color: #fff;
+  background: var(--mc-danger, #ef4444);
+  transform: scale(1.05);
+}
+.talk-btn.recording:hover:not(:disabled) {
+  color: #fff;
+  background: var(--mc-danger, #ef4444);
+}
+.recording-ring {
+  position: absolute;
+  inset: -4px;
+  border-radius: inherit;
+  border: 2px solid color-mix(in srgb, var(--mc-danger, #ef4444) 55%, transparent);
+  animation: recording-ring 1.4s ease-out infinite;
+  pointer-events: none;
+}
+@keyframes recording-ring {
+  0% { opacity: .9; transform: scale(.9); }
+  100% { opacity: 0; transform: scale(1.3); }
+}
+
+/* 语音听写条 */
+.dictation-bar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 8px 12px 0;
+  padding: 8px 12px;
+  border: 1px solid var(--mc-border-light, #e2e8f0);
+  border-radius: 12px;
+  background: var(--mc-bg-sunken, #f8fafc);
+  animation: dictation-in 0.18s ease-out;
+}
+.dictation-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--mc-danger, #ef4444);
+  flex-shrink: 0;
+  animation: dictation-pulse 1.2s ease-in-out infinite;
+}
+.dictation-text {
+  flex: 1;
+  min-width: 0;
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--mc-text-primary, #1e293b);
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow-wrap: anywhere;
+}
+.dictation-text.is-empty { color: var(--mc-text-tertiary, #94a3b8); }
+.dictation-hint {
+  flex-shrink: 0;
+  font-size: 11px;
+  color: var(--mc-text-tertiary, #94a3b8);
+  padding: 2px 8px;
+  border: 1px solid var(--mc-border, #cbd5e1);
+  border-radius: 999px;
+  white-space: nowrap;
+}
+.dictation-stop {
+  flex-shrink: 0;
+  padding: 5px 12px;
+  font-size: 12px;
+  font-weight: 600;
+  color: #fff;
+  background: var(--mc-danger, #ef4444);
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+.dictation-stop:hover:not(:disabled) { filter: brightness(1.08); }
+.dictation-stop:disabled { opacity: .5; cursor: not-allowed; }
+@keyframes dictation-in {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: none; }
+}
+@keyframes dictation-pulse {
+  0%, 100% {
+    opacity: 1;
+    box-shadow: 0 0 0 0 color-mix(in srgb, var(--mc-danger, #ef4444) 45%, transparent);
+  }
+  50% {
+    opacity: .75;
+    box-shadow: 0 0 0 5px transparent;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .recording-ring,
+  .dictation-dot {
+    animation: none !important;
+  }
 }
 
 .send-btn {

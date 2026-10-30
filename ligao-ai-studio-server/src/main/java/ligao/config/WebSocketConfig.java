@@ -9,6 +9,7 @@ import org.springframework.web.socket.config.annotation.WebSocketConfigurer;
 import org.springframework.web.socket.config.annotation.WebSocketHandlerRegistry;
 import org.springframework.web.socket.server.standard.ServletServerContainerFactoryBean;
 import ligao.channel.web.TalkModeWebSocketHandler;
+import ligao.stt.SttStreamWebSocketHandler;
 
 /**
  * WebSocket 配置
@@ -37,10 +38,14 @@ public class WebSocketConfig implements WebSocketConfigurer {
     private static final int MAX_TEXT_BUFFER_BYTES = 64 * 1024;
 
     private final TalkModeWebSocketHandler talkModeHandler;
+    private final SttStreamWebSocketHandler sttStreamHandler;
 
     @Override
     public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
         registry.addHandler(talkModeHandler, "/api/v1/talk/ws")
+                .setAllowedOrigins("*");
+        // Inline dictation (WeChat-style voice input in the chat input box).
+        registry.addHandler(sttStreamHandler, "/api/v1/stt/stream")
                 .setAllowedOrigins("*");
     }
 

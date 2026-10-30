@@ -240,18 +240,8 @@
         :thinking-enabled="thinkingEnabled"
         :thinking-supported="currentModelSupportsThinking"
         @toggle-thinking="thinkingEnabled = !thinkingEnabled"
-        @talk="showTalkMode = true"
       />
     </div>
-
-        <!-- Talk Mode 覆盖层 -->
-        <TalkMode
-          v-if="showTalkMode"
-          :visible="showTalkMode"
-          :agent-id="selectedAgentId"
-          :conversation-id="currentConversationId"
-          @close="showTalkMode = false"
-        />
       </div>
     </div>
   </div>
@@ -285,7 +275,6 @@ import { parsePrompt } from '@/utils/agentPromptProfile'
 import ChatInput from '@/components/chat/ChatInput.vue'
 import MultimodalRoutingHint from '@/components/chat/MultimodalRoutingHint.vue'
 import StreamLoadingBar from '@/components/chat/StreamLoadingBar.vue'
-import TalkMode from '@/components/chat/TalkMode.vue'
 import ModelSelector from '@/components/chat/ModelSelector.vue'
 import { useEChartsRenderer } from '@/composables/useEChartsRenderer'
 import { useKatexRenderer } from '@/composables/useKatexRenderer'
@@ -294,9 +283,6 @@ import { useGoalStore } from '@/stores/useGoalStore'
 import { useWorkspaceStore } from '@/stores/useWorkspaceStore'
 import GoalSetInlinePrompt from '@/components/goal/GoalSetInlinePrompt.vue'
 import GoalSystemLine from '@/components/goal/GoalSystemLine.vue'
-
-// ============ Talk Mode ============
-const showTalkMode = ref(false)
 
 // ============ 移动端 & 响应式状态 ============
 const convPanelOpen = ref(false)

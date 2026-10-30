@@ -62,6 +62,8 @@ public class SecurityConfig {
                     "/api/v1/channels/webhook/**",
                     "/api/v1/channels/webchat/**",
                     "/api/v1/talk/ws",
+                    // Inline dictation WS (voice input into the chat box)
+                    "/api/v1/stt/stream",
                     // RFC-045: tool-generated files served via unguessable UUID + 10-min TTL
                     "/api/v1/files/generated/**"
                 ).permitAll()
