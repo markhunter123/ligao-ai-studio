@@ -222,7 +222,6 @@
         </div>
       </div>
     </div>
-      </div>
     </div>
   </div>
 </template>
@@ -553,12 +552,12 @@ async function testEndpoint(ep: AcpEndpoint) {
    header shape comes from the global .mc-page-header / kicker styles. */
 .mc-page-inner.acp-page { display: flex; flex-direction: column; gap: 14px; }
 .header-actions { display: flex; gap: 8px; }
-.btn-primary { padding: 8px 14px; background: var(--mc-primary); color: white; border: none; border-radius: 10px; font-size: 13px; font-weight: 600; cursor: pointer; }
+.btn-primary { padding: 8px 14px; background: var(--mc-primary); color: white; border: none; border-radius: 10px; font-size: 13px; font-weight: 600; cursor: pointer; white-space: nowrap; }
 .btn-primary:hover { background: var(--mc-primary-hover); }
 .btn-primary:disabled { background: var(--mc-border); cursor: not-allowed; }
-.btn-secondary { padding: 8px 14px; background: var(--mc-bg-elevated); color: var(--mc-text-primary); border: 1px solid var(--mc-border); border-radius: 10px; font-size: 13px; cursor: pointer; }
+.btn-secondary { padding: 8px 14px; background: var(--mc-bg-elevated); color: var(--mc-text-primary); border: 1px solid var(--mc-border); border-radius: 10px; font-size: 13px; cursor: pointer; white-space: nowrap; }
 .btn-secondary:hover { background: var(--mc-bg-sunken); }
-.btn-link { background: none; border: none; color: var(--mc-primary); cursor: pointer; padding: 4px 8px; font-size: 12px; font-weight: 500; }
+.btn-link { background: none; border: none; color: var(--mc-primary); cursor: pointer; padding: 4px 8px; font-size: 12px; font-weight: 500; white-space: nowrap; }
 .btn-link:hover { color: var(--mc-primary-hover); }
 .btn-link.danger { color: var(--mc-danger); }
 .btn-link:disabled { color: var(--mc-text-tertiary); cursor: not-allowed; }
@@ -576,7 +575,7 @@ async function testEndpoint(ep: AcpEndpoint) {
 .endpoint-desc { font-size: 12px; color: var(--mc-text-secondary); margin-top: 4px; }
 .cell-cmd code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 12px; background: var(--mc-bg-sunken); padding: 2px 6px; border-radius: 4px; color: var(--mc-text-primary); display: inline-block; max-width: 320px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; vertical-align: middle; }
 
-.status-badge { padding: 2px 10px; border-radius: 999px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; }
+.status-badge { padding: 2px 10px; border-radius: 999px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; white-space: nowrap; }
 .status-ok { background: rgba(34, 197, 94, 0.12); color: #16a34a; }
 .status-error { background: var(--mc-danger-bg); color: var(--mc-danger); }
 .status-unknown { background: var(--mc-bg-sunken); color: var(--mc-text-tertiary); }
